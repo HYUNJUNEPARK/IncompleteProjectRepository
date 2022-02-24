@@ -112,6 +112,16 @@ class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding
 
 binding.searchEditText.setOnKeyListener
 에디 텍스트에 키보드가 눌릴떄마다 이벤트를 받을 수 있음
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bookRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_book"
+tools:listitem 를 통해 리사이클러뷰에 아이템리스트가 어떻게 추가될지 시뮬레이션 식으로 볼 수 있음
+
+
+
 ```
 
 Glide
@@ -131,10 +141,6 @@ http 통신을 허용함
 
 Glide
 https://github.com/bumptech/glide
-
-
-Room library
--최근 기록 저장
 
 포스트맨 - API 테스트
 https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=ko
@@ -156,3 +162,6 @@ https://joycehong0524.medium.com/android-studio-retrofit2-%EA%B8%B0%EB%B3%B8-%EC
 
 Retrofit 최신 버전 확인 -> github tags
 https://github.com/square/retrofit
+
+Room library
+-최근 기록 저장

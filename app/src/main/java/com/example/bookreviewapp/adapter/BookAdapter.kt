@@ -24,7 +24,7 @@ ListAdapter<데이터클래스, 리사이클러뷰 뷰홀더>를 인자로 받�
 RecyclerViewAdapter 와 다르게 getItemCount() 구현안해도 됨
 */
 
-class BookAdapter : ListAdapter<BookDetailDTO, BookItemViewHolder>(diffUtil) {
+class BookAdapter : ListAdapter<BookDetailDTO, BookAdapter.BookItemViewHolder>(diffUtil) {
     //리사이클러뷰가 실제로 뷰 포지션이 변경되었을 때 새로운 값을 할당할지 말지 결정하는 기준
     //같은 아이템이 올라오면 다시 할당할 필요가 없다 이런걸 판단해 주는게 diffUtil
     companion object {
@@ -35,11 +35,11 @@ class BookAdapter : ListAdapter<BookDetailDTO, BookItemViewHolder>(diffUtil) {
         val diffUtil = object : DiffUtil.ItemCallback<BookDetailDTO>() {
             // 두 아이템이 동일한 아이템인지 체크. 보통 고유한 id를 기준으로 비교
             override fun areItemsTheSame(oldItem: BookDetailDTO, newItem: BookDetailDTO): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
             // 두 아이템이 동일한 내용을 가지고 있는지 체크. areItemsTheSame()이 true일때 호출됨
             override fun areContentsTheSame(oldItem: BookDetailDTO, newItem: BookDetailDTO): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
         }
     }
