@@ -91,7 +91,7 @@ class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding
 
 
 //////////////
-``` 텍스트 뷰가 길어저도 라인은 한개만
+``` 텍스트 뷰가 길어저도 라인은 한개만 표시 할 때
     <TextView
 
         android:lines="1"
@@ -101,6 +101,17 @@ class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding
          android:maxLines="3"
          android:textSize="12sp"
          android:ellipsize="end"
+
+
+검색할 때 라인 제한과 인풋타입 제한
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
+        android:lines="1"
+        android:inputType="text"
+
+binding.searchEditText.setOnKeyListener
+에디 텍스트에 키보드가 눌릴떄마다 이벤트를 받을 수 있음
 ```
 
 Glide
