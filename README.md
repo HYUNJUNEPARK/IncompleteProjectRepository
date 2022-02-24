@@ -33,6 +33,7 @@ bookService.getBestSellerBooks(userAPIKey)
     .enqueue(object: Callback<BestSellerDTO> {
         override fun onResponse(call: Call<BestSellerDTO>, response: Response<BestSellerDTO>) {
             if(response.isSuccessful.not()) { return }
+            //body 에 BestSellerDTO 형식의 데이터가 들어있음
             response.body()?.let {
                 it.bookDetail.forEach { a_book_info ->
                     //...
@@ -44,6 +45,8 @@ bookService.getBestSellerBooks(userAPIKey)
         }
     })
 ```
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 
 DTO(Data Transfer Object)
@@ -64,16 +67,63 @@ data class BookDetails(
 )
 ```
 
-RecyclerView
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+ListAdapter
+
+```kotlin
+
+class Adapter: RecyclerView.Adapter<Holder>() {
+
+}
+
+class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val binding = ItemRecyclerBinding.inflate((LayoutInflater.from(parent.context), parent, false))
+        return Holder(binding)
+     }
+}
+
+```
+
+
+
+
+
+//////////////
+``` 텍스트 뷰가 길어저도 라인은 한개만
+    <TextView
+
+        android:lines="1"
+        android:ellipsize="end"
+ />
+
+         android:maxLines="3"
+         android:textSize="12sp"
+         android:ellipsize="end"
+```
 
 Glide
--이미지로딩
+glide 로 이미지를 가져올 때 http 통신을 허용하지 않으면 이미지가 불려지지 않는 경우가 있음
+-> AndroidManifest
+```
+    <application
+        android:usesCleartextTraffic="true"
+
+http 통신을 허용함
+```
+
+`implementation 'com.github.bumptech.glide:glide:4.13.0'`
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Glide
+https://github.com/bumptech/glide
+
 
 Room library
 -최근 기록 저장
-
-
 
 포스트맨 - API 테스트
 https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=ko
@@ -83,6 +133,11 @@ https://otu165.tistory.com/21
 
 인터파크 오픈 API
 http://book.interpark.com/bookPark/html/bookpinion/api_main.html
+인터파크 도서 -> 북피니언 -> 관리 -> 오픈업 관리
+
+리스트어댑터
+https://velog.io/@24hyunji/AndroidKotlin-RecyclerView%EC%97%90%EC%84%9C-ListAdapter-DiffUtil-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0
+
 
 Retrofit 사용법
 https://square.github.io/retrofit/
