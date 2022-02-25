@@ -6,7 +6,9 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.bookreviewapp.databinding.ActivityDetailBinding
 import com.example.bookreviewapp.db.AppDataBase
+import com.example.bookreviewapp.db.getAppDatabase
 import com.example.bookreviewapp.model.BookDetailDto
+import com.example.bookreviewapp.model.Review
 
 class DetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
@@ -16,11 +18,13 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java,
-            "BookSearchDB"
-        ).build()
+//        db = Room.databaseBuilder(
+//            applicationContext,
+//            AppDataBase::class.java,
+//            "BookSearchDB"
+//        ).build()
+
+        db = getAppDatabase(this)
 
         val model = intent.getParcelableExtra<BookDetailDto>("bookModel")
 
@@ -32,5 +36,23 @@ class DetailActivity : AppCompatActivity() {
         Glide.with(binding.coverImageView)
              .load(model?.coverSmallUrl.orEmpty())
              .into(binding.coverImageView)
+
+        Thread {
+            val review = db.reviewDao().getOneReview(model?.id?.toInt() ?:0 )
+            runOnUiThread {
+                binding.reviewEditText.setText(review?.review.orEmpty())
+            }
+        }.start()
+
+        binding.saveButton.setOnClickListener {
+            Thread {
+                db.reviewDao().saveReview(
+                    Review(
+                        model?.id?.toInt() ?: 0,
+                        binding.reviewEditText.text.toString()
+                    )
+                )
+            }.start()
+        }
     }
 }

@@ -17,6 +17,7 @@ import com.example.bookreviewapp.adapter.HistoryAdapter
 import com.example.bookreviewapp.api.InterParkAPI
 import com.example.bookreviewapp.databinding.ActivityMainBinding
 import com.example.bookreviewapp.db.AppDataBase
+import com.example.bookreviewapp.db.getAppDatabase
 import com.example.bookreviewapp.model.BestSellerDto
 import com.example.bookreviewapp.model.History
 import com.example.bookreviewapp.model.SearchBookDto
@@ -46,12 +47,13 @@ class MainActivity : AppCompatActivity() {
         initBookRecyclerView()
         initHistoryRecyclerView()
 
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java,
-            "BookSearchDB"
-        ).build()
+//        db = Room.databaseBuilder(
+//            applicationContext,
+//            AppDataBase::class.java,
+//            "BookSearchDB"
+//        ).build()
 
+        db = getAppDatabase(this)
 
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteSearchKeyword(keyword: String) {
         Thread {
-            db.historyDAO().delete(keyword)
+            db.historyDao().delete(keyword)
             showHistoryView()
         }.start()
     }
@@ -134,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showHistoryView() {
         Thread {
-            val keywords = db.historyDAO().getAll().reversed() //최신 순으로
+            val keywords = db.historyDao().getAll().reversed() //최신 순으로
             runOnUiThread {
                 binding.historyRecyclerView.isVisible = true
                 historyAdapter.submitList(keywords.orEmpty())
@@ -149,7 +151,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveSearchKeyword(keyword: String) {
         Thread {
-            db.historyDAO().insertHist(History(null, keyword))
+            db.historyDao().insertHist(History(null, keyword))
         }.start()
     }
 

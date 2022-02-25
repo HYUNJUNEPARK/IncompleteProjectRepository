@@ -85,8 +85,18 @@ class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding
 }
 
 ```
+/////
+DB 가 이미 있는데 새로운 dB 를 만든다면 충돌로 인해 앱이 크래쉬 될 수 있음 (version = 1)
+Histroy로 db를 만든 후에 Review로 만들었을 때 발생함
 
 
+@Database(entities = [History::class, Review::class], version = 1)
+abstract class AppDataBase : RoomDatabase() {
+    abstract fun historyDao(): HistoryDAO
+    abstract fun reviewDao(): ReviewDao
+}
+
+->
 
 
 
