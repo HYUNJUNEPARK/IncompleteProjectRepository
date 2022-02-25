@@ -12,13 +12,12 @@ class HistoryAdapter(val historyDeleteClickedListener: (String) -> Unit)
     : ListAdapter<History, HistoryAdapter.HistoryItemViewHolder>(diffUtil) {
 
     companion object {
-
         val diffUtil = object : DiffUtil.ItemCallback<History>() {
             override fun areItemsTheSame(oldItem: History, newItem: History): Boolean {
-                return oldItem == newItem
+                return oldItem.uid == newItem.uid
             }
             override fun areContentsTheSame(oldItem: History, newItem: History): Boolean {
-                return oldItem.keyword == newItem.keyword
+                return oldItem == newItem
             }
         }
     }

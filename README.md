@@ -136,6 +136,39 @@ http 통신을 허용함
 
 `implementation 'com.github.bumptech.glide:glide:4.13.0'`
 
+/////////////////////////////////////////////////////////////////////////////
+
+
+data class 직렬화
+```
+plugins {
+    id 'kotlin-parcelize'
+}
+추가
+
+
+데이터 클래스를 직렬화 가능하도록 설정
+@Parcelize <<<요거랑
+data class BookDetailDto(
+    @SerializedName("itemId") val id : Long,
+    @SerializedName("title") val title : String,
+    @SerializedName("description") val description : String,
+    @SerializedName("coverSmallUrl") val coverSmallUrl : String
+) : Parcelable <<<요거 추가
+
+
+//직렬화 데이터 갖고 오기
+val model = intent.getParcelableExtra<BookDetailDto>("bookModel")
+```
+
+
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

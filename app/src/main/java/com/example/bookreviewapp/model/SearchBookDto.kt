@@ -2,7 +2,7 @@ package com.example.bookreviewapp.model
 
 import com.google.gson.annotations.SerializedName
 
-data class BestSellerDTO(
+data class SearchBookDto(
     @SerializedName("title") val title : String,
-    @SerializedName("item") val bookDetail : List<BookDetailDTO>
+    @SerializedName("item") val bookDetails : List<BookDetailDto>
 )

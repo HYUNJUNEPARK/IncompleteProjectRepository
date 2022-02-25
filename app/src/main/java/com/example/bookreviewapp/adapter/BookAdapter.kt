@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.bookreviewapp.adapter.BookAdapter.*
 import com.example.bookreviewapp.databinding.ItemBookBinding
-import com.example.bookreviewapp.model.BookDetailDTO
+import com.example.bookreviewapp.model.BookDetailDto
 
 /*ListAdapter
 DiffUtil 을 활용해서 리스트를 업데이트 할 수 있는 기능을 추가한 Adapter
@@ -24,7 +23,7 @@ ListAdapter<데이터클래스, 리사이클러뷰 뷰홀더>를 인자로 받�
 RecyclerViewAdapter 와 다르게 getItemCount() 구현안해도 됨
 */
 
-class BookAdapter : ListAdapter<BookDetailDTO, BookAdapter.BookItemViewHolder>(diffUtil) {
+class BookAdapter(private val itemClickedListener: (BookDetailDto) -> Unit) : ListAdapter<BookDetailDto, BookAdapter.BookItemViewHolder>(diffUtil) {
     //리사이클러뷰가 실제로 뷰 포지션이 변경되었을 때 새로운 값을 할당할지 말지 결정하는 기준
     //같은 아이템이 올라오면 다시 할당할 필요가 없다 이런걸 판단해 주는게 diffUtil
     companion object {
@@ -32,14 +31,14 @@ class BookAdapter : ListAdapter<BookDetailDTO, BookAdapter.BookItemViewHolder>(d
         기존 리스트와 업데이트 된 리스트의 차이를 계산하고 실제로 변환할 리스트 아이템들의 결과를 반환하는 유틸리티 클래스
          RecyclerView Adpater의 업데이트를 계산하는데 사용되고 ListAdapter에서 DiffUtil을 활용해서 차이점을 계산
         */
-        val diffUtil = object : DiffUtil.ItemCallback<BookDetailDTO>() {
+        val diffUtil = object : DiffUtil.ItemCallback<BookDetailDto>() {
             // 두 아이템이 동일한 아이템인지 체크. 보통 고유한 id를 기준으로 비교
-            override fun areItemsTheSame(oldItem: BookDetailDTO, newItem: BookDetailDTO): Boolean {
-                return oldItem == newItem
+            override fun areItemsTheSame(oldItem: BookDetailDto, newItem: BookDetailDto): Boolean {
+                return oldItem.id == newItem.id
             }
             // 두 아이템이 동일한 내용을 가지고 있는지 체크. areItemsTheSame()이 true일때 호출됨
-            override fun areContentsTheSame(oldItem: BookDetailDTO, newItem: BookDetailDTO): Boolean {
-                return oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: BookDetailDto, newItem: BookDetailDto): Boolean {
+                return oldItem == newItem
             }
         }
     }
@@ -64,10 +63,18 @@ class BookAdapter : ListAdapter<BookDetailDTO, BookAdapter.BookItemViewHolder>(d
     목록에서 아이템 하나가 클릭외었을 때 홀더가 갖고 있는 아이템 바인딩에 클릭 리스너를 달아 처리
     ui 작업이 필요한 함수를 여기서 작성하고 onBindViewHolder 에서 호출해 사용할 수 있음*/
     inner class BookItemViewHolder(private val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(bookModel: BookDetailDTO) {
+        fun bind(bookModel: BookDetailDto) {
             binding.titleTextView.text = bookModel.title
             binding.descriptionTextView.text = bookModel.description
-            Glide.with(binding.coverImageView.context).load(bookModel.coverSmallUrl).into(binding.coverImageView)
+            Glide.with(binding.coverImageView.context)
+                 .load(bookModel.coverSmallUrl)
+                 .into(binding.coverImageView)
+
+            //class BookAdapter(private val itemClickedListener: (BookDetailDto) -> Unit)
+            //binding.root -> item_book.xml : 아이템 객체를 클릭하면 동작함
+            binding.root.setOnClickListener {
+                itemClickedListener(bookModel)
+            }
         }
     }
 }
