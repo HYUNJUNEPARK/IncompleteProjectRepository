@@ -3,7 +3,6 @@ package com.june.daangnmarket
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.android.material.navigation.NavigationBarView
 import com.june.daangnmarket.chatlist.ChatListFragment
 import com.june.daangnmarket.databinding.ActivityMainBinding
 import com.june.daangnmarket.home.HomeFragment
@@ -13,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     companion object {
-        val fragmentList = arrayListOf(
+        val fragmentList = arrayListOf (
             HomeFragment(),
             ChatListFragment(),
             MyPageFragment()
