@@ -6,12 +6,34 @@ Firebase Authentication
 
 
 
-///
-UI
-BottomNavigationView
-app:itemRippleColor="@null" : 클릭 시 Ripple 효과를 없앰
-app:itemTextColor="@color/black" : 아이콘 텍스트 컬러 설정
-app:itemIconTint="@drawable/select_menu_color" :
-아이템 선택/해제 시 컬러 설정 가능하며 drawable 에 <selector> 태그 하위 태그로 item 으로 컬러 지정
-`<item android:color="@color/black" android:state_checked="true"/>`
-`<item android:color="@color/gray" android:state_checked="false"/>`
+
+
+
+구글 서비스 build
+build.gradle(Module)
+```
+plugins {
+    id 'com.google.gms.google-services'
+}
+
+//...
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
+}
+
+
+```
+
+build.gradle(Project)
+```
+dependencies {
+    classpath "com.google.gms:google-services:4.3.5"
+}
+```
+
+파이어베이스 라이브러리
+```
+
+```
+

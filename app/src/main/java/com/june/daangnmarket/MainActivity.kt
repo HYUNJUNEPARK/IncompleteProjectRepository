@@ -3,6 +3,7 @@ package com.june.daangnmarket
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationBarView
 import com.june.daangnmarket.chatlist.ChatListFragment
 import com.june.daangnmarket.databinding.ActivityMainBinding
 import com.june.daangnmarket.home.HomeFragment
@@ -25,11 +26,10 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(fragmentList[0])
         initFragment()
-
     }
 
     private fun initFragment(){
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener {  menu ->
+        binding.bottomNavigationView.setOnItemSelectedListener{ menu ->
             when (menu.itemId) {
                 R.id.home -> replaceFragment(fragmentList[0])
                 R.id.chatList -> replaceFragment(fragmentList[1])
