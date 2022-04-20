@@ -58,7 +58,8 @@ class HomeFragment : Fragment() {
             Log.d(TAG, "onDataChange: $articleModel")
             articleList.add(articleModel)
             articleAdapter.submitList(articleList)
-            testList.clear()
+
+
 
 //            Log.d(TAG, "onDataChange: ${snapshotMap["createdAt"]}")
 //            val articleModel = ArticleModel(
@@ -137,6 +138,10 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         _binding = null
         //articleDB.removeEventListener(listener)
+        articleList.clear()
+        articleAdapter.submitList(articleList)
+
+
         Log.d(TAG, "onDestroy: ")
         articleDB.removeEventListener(listener2)
     }
