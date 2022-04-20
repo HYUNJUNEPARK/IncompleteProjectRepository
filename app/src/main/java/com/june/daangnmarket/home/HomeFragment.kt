@@ -1,6 +1,5 @@
 package com.june.daangnmarket.home
 
-import android.R.attr.logoDescription
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,19 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.june.daangnmarket.DBKey.Companion.DB_ARTICLES
 import com.june.daangnmarket.DBKey.Companion.TAG
 import com.june.daangnmarket.databinding.FragmentHomeBinding
-import java.util.HashMap
 
-import android.R.attr.name
+import android.content.Intent
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.getValue
-import kotlin.math.log
 
 
 class HomeFragment : Fragment() {
@@ -29,88 +26,54 @@ class HomeFragment : Fragment() {
         get() = _binding!!
 
     private lateinit var articleAdapter: ArticleAdapter
-//    private val auth: FirebaseAuth by lazy {
-//        Firebase.auth
-//    }
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
+    }
+
     private lateinit var articleDB: DatabaseReference
     private val articleList = mutableListOf<ArticleModel>()
 
 
-    private val listener2 = object  : ValueEventListener {
+    private val listener2 = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
 
-            //var snapshotMap = mutableMapOf<String?, Any?>()
-
+            //TODO 다큐먼트 값이 추가 됨
+            articleList.clear()
             var testList = mutableListOf<String>()
-            
             for (i in snapshot.children) {
                 testList.add(i.value.toString())
-                //snapshotMap.put(i.key, i.value)
             }
 
             val articleModel = ArticleModel(
-                testList[0].toLong(),
-                testList[1],
-                testList[2],
-                testList[3],
-                testList[4]
+                testList[0].toLong(), testList[1], testList[2],
+                testList[3], testList[4]
             )
-            Log.d(TAG, "onDataChange: $articleModel")
-            articleList.add(articleModel)
-            articleAdapter.submitList(articleList)
-
-
-
-//            Log.d(TAG, "onDataChange: ${snapshotMap["createdAt"]}")
-//            val articleModel = ArticleModel(
-//                snapshotMap["createdAt"],
-//                snapshotMap["imageUrl"],
-//                snapshotMap["price"],
-//                snapshotMap["sellerId"],
-//                snapshotMap["title"]
-//            )
-//            Log.d(TAG, "onDataChange: $articleModel")
-//            articleList.add(articleModel)
-//
-//            for(ds in snapshot.children) {
-//
-//                val articleModel = ds.getValue(ArticleModel::class.java)
-//                Log.d(TAG, "onDataChange: $articleModel")
-//
-//            }
-        }
-
-        override fun onCancelled(error: DatabaseError) { }
-    }
-
-
-    private val listener = object : ChildEventListener {
-        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            //Log.d(TAG, "onChildAdded: ${snapshot.key}")
-
-            val articleModel = snapshot.getValue(ArticleModel::class.java)
-            articleModel ?: return
-
-
-            snapshot.children.forEach { it ->
-
-
-            }
-
-            for( i in snapshot.children) {
-
-            }
-
             articleList.add(articleModel)
             articleAdapter.submitList(articleList)
         }
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildRemoved(snapshot: DataSnapshot) {}
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
         override fun onCancelled(error: DatabaseError) {}
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//    private val listener = object : ChildEventListener {
+//        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//            //Log.d(TAG, "onChildAdded: ${snapshot.key}")
+//            val articleModel = snapshot.getValue(ArticleModel::class.java)
+//            articleModel ?: return
+//            articleList.add(articleModel)
+//            articleAdapter.submitList(articleList)
+//        }
+//        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+//        override fun onChildRemoved(snapshot: DataSnapshot) {}
+//        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+//        override fun onCancelled(error: DatabaseError) {}
+//    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -118,6 +81,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+
+        binding.addFloatingButton.setOnClickListener {
+            //TODO 로그인 기능 구현 할
+
+            //if (auth.currentUser != null) {
+                val intent = Intent(requireContext(), AddArticleActivity::class.java)
+                startActivity(intent)
+//            } else {
+//                Snackbar.make(view, "로그인 후 사용해주세요", Snackbar.LENGTH_LONG).show()
+//
+//            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -138,10 +113,6 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         _binding = null
         //articleDB.removeEventListener(listener)
-        articleList.clear()
-        articleAdapter.submitList(articleList)
-
-
         Log.d(TAG, "onDestroy: ")
         articleDB.removeEventListener(listener2)
     }
