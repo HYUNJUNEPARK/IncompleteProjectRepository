@@ -1,11 +1,12 @@
 package com.june.daangnmarket.home
 
 data class ArticleModel(
-    val sellerId: String,
-    val title: String,
     val createdAt: Long,
+    val imageUrl: String,
     val price: String,
-    val imageUrl: String
+    val sellerId: String,
+    val title: String
 ) {
-    constructor(): this("","",0,"","")
+    constructor(): this(0, "", "", "", "")
+    //constructor(): this("", "", 0, "", "")
 }

@@ -20,7 +20,7 @@ class ArticleAdapter: ListAdapter<ArticleModel, ArticleAdapter.ViewHolder> (diff
             binding.dateTextView.text = format.format(date).toString()
             binding.priceTextView.text = articleModel.price
 
-            if (articleModel.imageUrl.isNotEmpty()) {
+            if (articleModel.imageUrl!!.isNotEmpty()) {
                 Glide.with(binding.thumbnailImageView)
                     .load(articleModel.imageUrl)
                     .into(binding.thumbnailImageView)
@@ -40,7 +40,8 @@ class ArticleAdapter: ListAdapter<ArticleModel, ArticleAdapter.ViewHolder> (diff
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ArticleModel>() {
             override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
-                return oldItem.createdAt == newItem.createdAt
+                return oldItem.sellerId == newItem.sellerId
+                //return oldItem.createdAt == newItem.createdAt
             }
             override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem == newItem
