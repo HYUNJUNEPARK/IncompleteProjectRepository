@@ -46,6 +46,10 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "onDataChange: ${article.value}")
 //                article.value
 //                testList.add(article.value.toString())
+
+
+                //TODO value 값 추출해서 리스트에 넣어야함
+                //{createdAt=1650543, sellerId=, price=988745, imageUrl=, title=test}
             }
             //Log.d(TAG, "onDataChange: $testList")
 //            for(i in testList) {
