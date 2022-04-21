@@ -12,7 +12,6 @@ import com.google.firebase.ktx.Firebase
 import com.june.daangnmarket.DBKey.Companion.DB_ARTICLES
 import com.june.daangnmarket.DBKey.Companion.TAG
 import com.june.daangnmarket.databinding.FragmentHomeBinding
-
 import android.content.Intent
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -39,17 +38,29 @@ class HomeFragment : Fragment() {
 
             //TODO 다큐먼트 값이 추가 됨
             articleList.clear()
-            var testList = mutableListOf<String>()
-            for (i in snapshot.children) {
-                testList.add(i.value.toString())
-            }
 
-            val articleModel = ArticleModel(
-                testList[0].toLong(), testList[1], testList[2],
-                testList[3], testList[4]
-            )
-            articleList.add(articleModel)
-            articleAdapter.submitList(articleList)
+
+            var testList = mutableListOf<String>()
+
+            for (article in snapshot.children) {
+                Log.d(TAG, "onDataChange: ${article.value}")
+//                article.value
+//                testList.add(article.value.toString())
+            }
+            //Log.d(TAG, "onDataChange: $testList")
+//            for(i in testList) {
+//
+//            }
+
+//            val articleModel = ArticleModel(
+//                /*createAt*/testList[0].toLong(),
+//                /*imageUrl*/testList[1],
+//                /*price*/testList[2],
+//                /*sellerId*/testList[3],
+//                /*title*/testList[4]
+//            )
+//            articleList.add(articleModel)
+//            articleAdapter.submitList(articleList)
         }
 
         override fun onCancelled(error: DatabaseError) {}
@@ -83,8 +94,7 @@ class HomeFragment : Fragment() {
         initRecyclerView()
 
         binding.addFloatingButton.setOnClickListener {
-            //TODO 로그인 기능 구현 할
-
+            //TODO 로그인 기능 구현 할 것
             //if (auth.currentUser != null) {
                 val intent = Intent(requireContext(), AddArticleActivity::class.java)
                 startActivity(intent)
@@ -100,6 +110,7 @@ class HomeFragment : Fragment() {
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.articleRecyclerView.adapter = articleAdapter
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
+
         //articleDB.addChildEventListener(listener)
         articleDB.addValueEventListener(listener2)
     }
@@ -113,7 +124,6 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         _binding = null
         //articleDB.removeEventListener(listener)
-        Log.d(TAG, "onDestroy: ")
         articleDB.removeEventListener(listener2)
     }
 }

@@ -8,5 +8,4 @@ data class ArticleModel(
     val title: String
 ) {
     constructor(): this(0, "", "", "", "")
-    //constructor(): this("", "", 0, "", "")
 }

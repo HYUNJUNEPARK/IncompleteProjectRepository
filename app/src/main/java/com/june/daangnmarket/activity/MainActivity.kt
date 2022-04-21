@@ -1,8 +1,9 @@
-package com.june.daangnmarket
+package com.june.daangnmarket.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.june.daangnmarket.R
 import com.june.daangnmarket.chatlist.ChatListFragment
 import com.june.daangnmarket.databinding.ActivityMainBinding
 import com.june.daangnmarket.home.HomeFragment

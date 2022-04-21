@@ -35,8 +35,6 @@ class AddArticleActivity : AppCompatActivity() {
         Firebase.database.reference.child(DB_ARTICLES)
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
