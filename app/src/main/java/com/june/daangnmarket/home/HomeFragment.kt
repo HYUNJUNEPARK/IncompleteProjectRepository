@@ -20,6 +20,7 @@ import com.june.daangnmarket.share.DBKey.Companion.IMAGE_URL
 import com.june.daangnmarket.share.DBKey.Companion.PRICE
 import com.june.daangnmarket.share.DBKey.Companion.SELLER_ID
 import com.june.daangnmarket.share.DBKey.Companion.TITLE
+import com.june.daangnmarket.share.FirebaseVar
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -68,17 +69,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.visibility = View.VISIBLE
+
         initRecyclerView()
+        setVisibilityFloatingButton()
 
         binding.addFloatingButton.setOnClickListener {
-            //TODO 로그인 기능 구현 할 것
-            //if (auth.currentUser != null) {
                 val intent = Intent(requireContext(), AddArticleActivity::class.java)
                 startActivity(intent)
-//            } else {
-//                Snackbar.make(view, "로그인 후 사용해주세요", Snackbar.LENGTH_LONG).show()
 //
-//            }
         }
     }
 
@@ -99,5 +97,13 @@ class HomeFragment : Fragment() {
         binding.articleRecyclerView.adapter = articleAdapter
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
         articleDB.addValueEventListener(listener)
+    }
+
+    private fun setVisibilityFloatingButton() {
+        if (FirebaseVar.auth.currentUser != null) {
+            binding.addFloatingButton.visibility = View.VISIBLE
+        } else {
+            binding.addFloatingButton.visibility = View.INVISIBLE
+        }
     }
 }

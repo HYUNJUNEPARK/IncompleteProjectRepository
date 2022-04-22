@@ -1,14 +1,11 @@
 package com.june.daangnmarket.mypage
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.june.daangnmarket.R
+import androidx.fragment.app.Fragment
 import com.june.daangnmarket.databinding.FragmentMyPageBinding
-import com.june.daangnmarket.share.DBKey.Companion.TAG
 import com.june.daangnmarket.share.FirebaseVar
 
 class MyPageFragment : Fragment() {
@@ -24,12 +21,20 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initCoverVisibility()
         binding.emailTextView.text = FirebaseVar.email
-        Log.d(TAG, "onViewCreated: ${FirebaseVar.email}")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun initCoverVisibility() {
+        if (FirebaseVar.auth.currentUser == null) {
+            binding.noMemberCover.visibility = View.VISIBLE
+        } else {
+            binding.noMemberCover.visibility = View.INVISIBLE
+        }
     }
 }

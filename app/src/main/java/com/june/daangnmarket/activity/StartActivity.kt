@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityStartBinding
-import com.june.daangnmarket.share.FirebaseVar
+import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.email
 import com.june.daangnmarket.share.FirebaseVar.Companion.initEmail
 
@@ -28,7 +28,9 @@ class StartActivity : AppCompatActivity() {
 
     private fun initSignInWithoutAuthButton() {
         binding.sigInWithoutAuthButton.setOnClickListener {
+            auth.signOut()
             email = null
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -61,12 +63,9 @@ class StartActivity : AppCompatActivity() {
                 }
 
                 Thread {
-                    FirebaseVar.auth.signInWithEmailAndPassword(email, pw)
+                    auth.signInWithEmailAndPassword(email, pw)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                runOnUiThread {
-                                    Toast.makeText(this, "로그인 완료", Toast.LENGTH_SHORT).show()
-                                }
                                 initEmail()
                                 val intent = Intent(this, MainActivity::class.java)
                                 startActivity(intent)
