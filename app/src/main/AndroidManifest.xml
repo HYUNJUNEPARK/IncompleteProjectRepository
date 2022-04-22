@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".share.FirebaseVar"
         android:theme="@style/Theme.DaangnMarket">
         <activity
             android:name=".activity.StartActivity"
@@ -21,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.SignUpActivity"
             android:exported="true" />
         <activity
             android:name=".home.AddArticleActivity"

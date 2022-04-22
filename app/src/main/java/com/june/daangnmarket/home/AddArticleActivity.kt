@@ -2,7 +2,6 @@ package com.june.daangnmarket.home
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Instrumentation
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -18,7 +16,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import com.june.daangnmarket.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
 
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
 
@@ -60,7 +58,12 @@ class AddArticleActivity : AppCompatActivity() {
             val price = binding.priceEditText.text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
 
-            val model = ArticleModel(System.currentTimeMillis(), "", "$price 원", sellerId, title )
+            if (title == "" || price =="") {
+                Toast.makeText(this, "상품명 또는 가격을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val model = ArticleModel(System.currentTimeMillis(), "", price, sellerId, title )
             articleDB.push().setValue(model)
             finish()
         }
@@ -108,6 +111,11 @@ class AddArticleActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
+
+
 
     private fun showPermissionContextPopup() {
         AlertDialog.Builder(this)

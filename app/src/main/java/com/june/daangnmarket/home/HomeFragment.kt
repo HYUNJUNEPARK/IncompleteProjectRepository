@@ -1,100 +1,73 @@
 package com.june.daangnmarket.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.june.daangnmarket.DBKey.Companion.DB_ARTICLES
-import com.june.daangnmarket.DBKey.Companion.TAG
 import com.june.daangnmarket.databinding.FragmentHomeBinding
-import android.content.Intent
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
-
+import com.june.daangnmarket.share.DBKey.Companion.CREATED_AT
+import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.share.DBKey.Companion.IMAGE_URL
+import com.june.daangnmarket.share.DBKey.Companion.PRICE
+import com.june.daangnmarket.share.DBKey.Companion.SELLER_ID
+import com.june.daangnmarket.share.DBKey.Companion.TITLE
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding
         get() = _binding!!
-
     private lateinit var articleAdapter: ArticleAdapter
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
-
     private lateinit var articleDB: DatabaseReference
     private val articleList = mutableListOf<ArticleModel>()
-
-
-    private val listener2 = object : ValueEventListener {
+    private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-
-            //TODO 다큐먼트 값이 추가 됨
             articleList.clear()
 
-
-            var testList = mutableListOf<String>()
-
-            for (article in snapshot.children) {
-                Log.d(TAG, "onDataChange: ${article.value}")
-//                article.value
-//                testList.add(article.value.toString())
-
-
-                //TODO value 값 추출해서 리스트에 넣어야함
+             for (article in snapshot.children.reversed()) {
                 //{createdAt=1650543, sellerId=, price=988745, imageUrl=, title=test}
+                val articleMap = article.value as HashMap<String, String>
+                val createdAt = articleMap[CREATED_AT].toString()
+                val imageUrl = articleMap[IMAGE_URL]
+                val price = articleMap[PRICE]
+                val sellerId = articleMap[SELLER_ID]
+                val title = articleMap[TITLE]
+                
+                val articleModel = ArticleModel(
+                    createdAt!!.toLong(),
+                    imageUrl,
+                    price,
+                    sellerId,
+                    title
+                )
+                articleList.add(articleModel)
+                articleAdapter.submitList(articleList)
+
+                binding.progressBar.visibility = View.INVISIBLE
             }
-            //Log.d(TAG, "onDataChange: $testList")
-//            for(i in testList) {
-//
-//            }
-
-//            val articleModel = ArticleModel(
-//                /*createAt*/testList[0].toLong(),
-//                /*imageUrl*/testList[1],
-//                /*price*/testList[2],
-//                /*sellerId*/testList[3],
-//                /*title*/testList[4]
-//            )
-//            articleList.add(articleModel)
-//            articleAdapter.submitList(articleList)
         }
-
-        override fun onCancelled(error: DatabaseError) {}
+        override fun onCancelled(error: DatabaseError) {
+            binding.progressBar.visibility = View.INVISIBLE
+        }
     }
 
-//    private val listener = object : ChildEventListener {
-//        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-//            //Log.d(TAG, "onChildAdded: ${snapshot.key}")
-//            val articleModel = snapshot.getValue(ArticleModel::class.java)
-//            articleModel ?: return
-//            articleList.add(articleModel)
-//            articleAdapter.submitList(articleList)
-//        }
-//        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-//        override fun onChildRemoved(snapshot: DataSnapshot) {}
-//        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-//        override fun onCancelled(error: DatabaseError) {}
-//    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.progressBar.visibility = View.VISIBLE
         initRecyclerView()
 
         binding.addFloatingButton.setOnClickListener {
@@ -109,16 +82,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView() {
-        articleAdapter = ArticleAdapter()
-        binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.articleRecyclerView.adapter = articleAdapter
-        articleDB = Firebase.database.reference.child(DB_ARTICLES)
-
-        //articleDB.addChildEventListener(listener)
-        articleDB.addValueEventListener(listener2)
-    }
-
     override fun onResume() {
         super.onResume()
         articleAdapter.notifyDataSetChanged()
@@ -127,7 +90,14 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        //articleDB.removeEventListener(listener)
-        articleDB.removeEventListener(listener2)
+        articleDB.removeEventListener(listener)
+    }
+
+    private fun initRecyclerView() {
+        articleAdapter = ArticleAdapter()
+        binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.articleRecyclerView.adapter = articleAdapter
+        articleDB = Firebase.database.reference.child(DB_ARTICLES)
+        articleDB.addValueEventListener(listener)
     }
 }

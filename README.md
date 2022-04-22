@@ -44,5 +44,8 @@ Glide
 https://velog.io/@odesay97/%EC%95%B1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-13-1-%EC%A4%91%EA%B3%A0%EA%B1%B0%EB%9E%98-%EC%95%B1-
 
 
-ValueEventListener/ChildEventListenr
+ValueEventListener/ChildEventListener
 https://firebase.google.com/docs/database/android/lists-of-data?hl=ko
+
+Android ProgressBar 기본으로 제공하는 스타일
+https://diyall.tistory.com/854
