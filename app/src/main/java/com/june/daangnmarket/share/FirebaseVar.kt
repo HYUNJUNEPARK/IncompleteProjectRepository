@@ -8,13 +8,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 
 class FirebaseVar: MultiDexApplication() {
     companion object {
         lateinit var auth: FirebaseAuth
         lateinit var storage: FirebaseStorage
-        lateinit var articleDB: DatabaseReference
+        lateinit var articleDBReference: DatabaseReference
+        lateinit var imgRef: StorageReference
+
         var email: String? = null
         var currentUser: FirebaseUser? = null
 
@@ -29,7 +32,7 @@ class FirebaseVar: MultiDexApplication() {
 
         auth = Firebase.auth
         storage = Firebase.storage
-        articleDB = Firebase.database.reference.child(DBKey.DB_ARTICLES)
+        articleDBReference = Firebase.database.reference
 
     }
 }

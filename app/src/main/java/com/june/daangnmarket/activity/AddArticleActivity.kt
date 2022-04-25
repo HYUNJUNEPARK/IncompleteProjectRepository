@@ -13,17 +13,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
 import com.june.daangnmarket.home.ArticleModel
+import com.june.daangnmarket.share.DBKey
 import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.FirebaseVar.Companion.articleDB
+import com.june.daangnmarket.share.FirebaseVar.Companion.articleDBReference
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
+import com.june.daangnmarket.share.FirebaseVar.Companion.storage
 import com.june.daangnmarket.share.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
+import java.io.File
 
 class AddArticleActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleAddBinding.inflate(layoutInflater) }
-    private var selectedImageUri: Uri? = null
+    private lateinit var filePath: Uri
     lateinit var resultListener: ActivityResultLauncher<Intent>
+
+    //private lateinit var filePath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +85,16 @@ class AddArticleActivity : AppCompatActivity() {
                     .load(uri)
                     .centerCrop()
                     .into(binding.photoImageView)
-                selectedImageUri = uri
+
+                //TODO toString
+                filePath = uri
+
+
+
+
+
+
+
             } else {
                 Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -91,22 +106,48 @@ class AddArticleActivity : AppCompatActivity() {
             val title = binding.titleEditText.text.toString()
             val price = binding.priceEditText.text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
-            Log.d(TAG, "initSubmitButton: $sellerId")
+
+            //TODO toString
+            val imageUri = filePath
 
             if (title == "" || price =="") {
                 Toast.makeText(this, "상품명 또는 가격을 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             val createAt = System.currentTimeMillis()
-            val model = ArticleModel(createAt, "", price, sellerId, title)
+            val model = ArticleModel(createAt, imageUri.toString(), price, sellerId, title)
+
+            val imgId = sellerId + createAt
 
             Thread {
+                val articleDB = articleDBReference.child(DBKey.DB_ARTICLES)
                 articleDB.push().setValue(model)
+
+                uploadImgToStorage(imgId)
             }.start()
 
             finish()
         }
+    }
+
+    private fun uploadImgToStorage(id: String) {
+        val storageRef = storage.reference
+        val imgRef: StorageReference = storageRef.child("images_daangn/$id.jpg")
+
+//        val file_uri = Uri.fromFile(File(filePath))
+        val file_uri = filePath
+
+
+        Thread {
+            imgRef.putFile(file_uri)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "uploadImgToStorage: $e")
+                }
+        }.start()
     }
 
     private fun showPermissionPopup() {
