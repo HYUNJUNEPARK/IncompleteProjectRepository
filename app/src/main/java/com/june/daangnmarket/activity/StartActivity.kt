@@ -10,20 +10,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityStartBinding
+import com.june.daangnmarket.network.NetworkConnection
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.email
 import com.june.daangnmarket.share.FirebaseVar.Companion.initEmail
 
 class StartActivity : AppCompatActivity() {
     private val binding by lazy { ActivityStartBinding.inflate(layoutInflater) }
+    private val networkCheck: NetworkConnection by lazy {
+        NetworkConnection(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        networkCheck.register()
+
         initSignInWithoutAuthButton()
         initSignInButton()
         initOpenSignInDialog()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        networkCheck.unregister()
     }
 
     private fun initSignInWithoutAuthButton() {

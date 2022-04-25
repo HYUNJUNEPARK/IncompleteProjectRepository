@@ -23,6 +23,7 @@ class ArticleAdapter: ListAdapter<ArticleModel, ArticleAdapter.ViewHolder> (diff
             if (articleModel.imageUrl!!.isNotEmpty()) {
                 Glide.with(binding.thumbnailImageView)
                     .load(articleModel.imageUrl)
+                    .centerCrop()
                     .into(binding.thumbnailImageView)
             }
         }

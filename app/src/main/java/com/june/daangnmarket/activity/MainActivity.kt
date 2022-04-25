@@ -8,10 +8,13 @@ import com.june.daangnmarket.chatlist.ChatListFragment
 import com.june.daangnmarket.databinding.ActivityMainBinding
 import com.june.daangnmarket.home.HomeFragment
 import com.june.daangnmarket.mypage.MyPageFragment
+import com.june.daangnmarket.network.NetworkConnection
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-
+    private val networkCheck: NetworkConnection by lazy {
+        NetworkConnection(this)
+    }
     companion object {
         val fragmentList = arrayListOf (
             HomeFragment(),
@@ -24,8 +27,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        networkCheck.register()
         replaceFragment(fragmentList[0])
         initFragment()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        networkCheck.unregister()
     }
 
     private fun initFragment(){

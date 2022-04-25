@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.FragmentMyPageBinding
-import com.june.daangnmarket.share.FirebaseVar
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.email
 
@@ -33,7 +32,6 @@ class MyPageFragment : Fragment() {
         initCoverVisibility()
         initDeleteButton()
         initSignOutButton()
-
     }
 
     private fun initNoMemberCover() {

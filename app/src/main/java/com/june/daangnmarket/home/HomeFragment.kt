@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.june.daangnmarket.activity.AddArticleActivity
 import com.june.daangnmarket.databinding.FragmentHomeBinding
 import com.june.daangnmarket.share.DBKey.Companion.CREATED_AT
 import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
@@ -76,7 +77,6 @@ class HomeFragment : Fragment() {
         binding.addFloatingButton.setOnClickListener {
                 val intent = Intent(requireContext(), AddArticleActivity::class.java)
                 startActivity(intent)
-//
         }
     }
 
