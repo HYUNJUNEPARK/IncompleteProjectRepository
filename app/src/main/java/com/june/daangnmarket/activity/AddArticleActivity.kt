@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,20 +15,16 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
 import com.june.daangnmarket.home.ArticleModel
-import com.june.daangnmarket.share.DBKey
-import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.FirebaseVar.Companion.articleDBReference
+import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.storage
 import com.june.daangnmarket.share.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
-import java.io.File
 
 class AddArticleActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleAddBinding.inflate(layoutInflater) }
-    private lateinit var filePath: Uri
+    private var filePath: Uri? = null
     lateinit var resultListener: ActivityResultLauncher<Intent>
-
-    //private lateinit var filePath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,15 +81,7 @@ class AddArticleActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(binding.photoImageView)
 
-                //TODO toString
                 filePath = uri
-
-
-
-
-
-
-
             } else {
                 Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -106,23 +93,21 @@ class AddArticleActivity : AppCompatActivity() {
             val title = binding.titleEditText.text.toString()
             val price = binding.priceEditText.text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
+            val imageUri = filePath.toString()
+            //content://com.android.providers.media.documents/document/image%3A3487"
 
-            //TODO toString
-            val imageUri = filePath
-
-            if (title == "" || price =="") {
-                Toast.makeText(this, "상품명 또는 가격을 입력해주세요", Toast.LENGTH_SHORT).show()
+            if (title.isEmpty() || price.isEmpty() || imageUri == "null") {
+                Toast.makeText(this, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val createAt = System.currentTimeMillis()
-            val model = ArticleModel(createAt, imageUri.toString(), price, sellerId, title)
 
+            val createAt = System.currentTimeMillis()
+            val model = ArticleModel(createAt, imageUri, price, sellerId, title)
             val imgId = sellerId + createAt
+            val articleDB = firebaseDBReference.child(DB_ARTICLES)
 
             Thread {
-                val articleDB = articleDBReference.child(DBKey.DB_ARTICLES)
                 articleDB.push().setValue(model)
-
                 uploadImgToStorage(imgId)
             }.start()
 
@@ -133,19 +118,19 @@ class AddArticleActivity : AppCompatActivity() {
     private fun uploadImgToStorage(id: String) {
         val storageRef = storage.reference
         val imgRef: StorageReference = storageRef.child("images_daangn/$id.jpg")
-
-//        val file_uri = Uri.fromFile(File(filePath))
-        val file_uri = filePath
-
+        val file_uri: Uri = filePath ?: return
 
         Thread {
             imgRef.putFile(file_uri)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                    runOnUiThread {
+                        Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "uploadImgToStorage: $e")
+                    runOnUiThread {
+                        Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
+                    }
                 }
         }.start()
     }

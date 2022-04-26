@@ -11,8 +11,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.june.daangnmarket.activity.AddArticleActivity
 import com.june.daangnmarket.databinding.FragmentHomeBinding
 import com.june.daangnmarket.share.DBKey.Companion.CREATED_AT
@@ -21,7 +19,8 @@ import com.june.daangnmarket.share.DBKey.Companion.IMAGE_URL
 import com.june.daangnmarket.share.DBKey.Companion.PRICE
 import com.june.daangnmarket.share.DBKey.Companion.SELLER_ID
 import com.june.daangnmarket.share.DBKey.Companion.TITLE
-import com.june.daangnmarket.share.FirebaseVar
+import com.june.daangnmarket.share.FirebaseVar.Companion.auth
+import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -29,6 +28,8 @@ class HomeFragment : Fragment() {
         get() = _binding!!
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var articleDB: DatabaseReference
+
+
     private val articleList = mutableListOf<ArticleModel>()
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -88,6 +89,7 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+
         articleDB.removeEventListener(listener)
     }
 
@@ -95,12 +97,12 @@ class HomeFragment : Fragment() {
         articleAdapter = ArticleAdapter()
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.articleRecyclerView.adapter = articleAdapter
-        articleDB = Firebase.database.reference.child(DB_ARTICLES)
+        articleDB = firebaseDBReference.child(DB_ARTICLES)
         articleDB.addValueEventListener(listener)
     }
 
     private fun setVisibilityFloatingButton() {
-        if (FirebaseVar.auth.currentUser != null) {
+        if (auth.currentUser != null) {
             binding.addFloatingButton.visibility = View.VISIBLE
         } else {
             binding.addFloatingButton.visibility = View.INVISIBLE

@@ -62,3 +62,5 @@ https://yoon-dailylife.tistory.com/21
 https://fimtrus.tistory.com/entry/Android-%ED%81%B4%EB%A6%AD-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EB%92%A4%EC%97%90-%EB%B0%B0%EC%B9%98%EB%90%9C-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%97%90-%EC%A0%84%EB%8B%AC%EB%90%98%EC%A7%80-%EC%95%8A%EA%B2%8C-%ED%95%98%EA%B8%B0
 
 
+https://seogwipo.tistory.com/entry/FireBase-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4-%EB%A6%AC%EC%8A%A4%EB%84%88-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+

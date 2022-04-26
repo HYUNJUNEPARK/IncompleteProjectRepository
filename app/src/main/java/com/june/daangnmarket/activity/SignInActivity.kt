@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityStartBinding
 import com.june.daangnmarket.network.NetworkConnection
@@ -15,7 +16,7 @@ import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.email
 import com.june.daangnmarket.share.FirebaseVar.Companion.initEmail
 
-class StartActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
     private val binding by lazy { ActivityStartBinding.inflate(layoutInflater) }
     private val networkCheck: NetworkConnection by lazy {
         NetworkConnection(this)

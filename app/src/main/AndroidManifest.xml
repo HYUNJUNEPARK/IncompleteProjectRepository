@@ -14,7 +14,7 @@
         android:name=".share.FirebaseVar"
         android:theme="@style/Theme.DaangnMarket">
         <activity
-            android:name=".activity.StartActivity"
+            android:name=".activity.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
