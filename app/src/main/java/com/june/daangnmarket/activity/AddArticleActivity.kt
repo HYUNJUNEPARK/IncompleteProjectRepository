@@ -6,18 +6,21 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
 import com.june.daangnmarket.home.ArticleModel
 import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
-import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
+import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.share.FirebaseVar.Companion.storage
 import com.june.daangnmarket.share.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
 
@@ -45,7 +48,10 @@ class AddArticleActivity : AppCompatActivity() {
                     showPermissionPopup()
                 }
                 else -> {
-                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ_EXTERNAL_STORAGE)
+                    requestPermissions(
+                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                        REQUEST_READ_EXTERNAL_STORAGE
+                    )
                 }
             }
         }
@@ -76,9 +82,10 @@ class AddArticleActivity : AppCompatActivity() {
             }
             val uri = result.data?.data
             if (uri != null) {
+
                 Glide.with(this)
                     .load(uri)
-                    .centerCrop()
+                    .transform(CenterCrop(), RoundedCorners(18))
                     .into(binding.photoImageView)
 
                 filePath = uri
@@ -90,28 +97,30 @@ class AddArticleActivity : AppCompatActivity() {
 
     private fun initSubmitButton() {
         binding.submitButton.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+
             val title = binding.titleEditText.text.toString()
             val price = binding.priceEditText.text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
-            val imageUri = filePath.toString()
+            val createAt = System.currentTimeMillis()
+            val imageUri = sellerId + createAt
+            val itemDescription = binding.itemDescriptionEditText.text.toString()
             //content://com.android.providers.media.documents/document/image%3A3487"
 
-            if (title.isEmpty() || price.isEmpty() || imageUri == "null") {
+            if (title.isEmpty() || price.isEmpty() || filePath == null) {
+                binding.progressBar.visibility = View.INVISIBLE
                 Toast.makeText(this, "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val createAt = System.currentTimeMillis()
-            val model = ArticleModel(createAt, imageUri, price, sellerId, title)
+            val model = ArticleModel(createAt, imageUri, price, sellerId, title, itemDescription)
             val imgId = sellerId + createAt
             val articleDB = firebaseDBReference.child(DB_ARTICLES)
 
             Thread {
                 articleDB.push().setValue(model)
-                uploadImgToStorage(imgId)
             }.start()
-
-            finish()
+            uploadImgToStorage(imgId)
         }
     }
 
@@ -124,11 +133,14 @@ class AddArticleActivity : AppCompatActivity() {
             imgRef.putFile(file_uri)
                 .addOnSuccessListener {
                     runOnUiThread {
+                        binding.progressBar.visibility = View.INVISIBLE
                         Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
                 }
                 .addOnFailureListener { e ->
                     runOnUiThread {
+                        binding.progressBar.visibility = View.INVISIBLE
                         Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -141,7 +153,9 @@ class AddArticleActivity : AppCompatActivity() {
             .setMessage("사진을 가져오기 위해 필요합니다.")
             .setPositiveButton("동의") { _, _ ->
                 requestPermissions(
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ),
                     REQUEST_READ_EXTERNAL_STORAGE
                 )
             }

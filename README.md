@@ -41,6 +41,18 @@ implementation 'com.google.firebase:firebase-auth-ktx'
 implementation 'com.google.firebase:firebase-storage-ktx'
 ```
 
+
+
+////
+Json 직렬화/역직렬화 - Fast apply
+https://tourspace.tistory.com/357?category=797357
+
+https://www.codegrepper.com/code-examples/java/pass+model+class+in+intent+android
+
+
+
+
+
 /////////////////
 Glide
 `implementation 'com.github.bumptech.glide:glide:4.12.0'`
@@ -61,6 +73,16 @@ https://yoon-dailylife.tistory.com/21
 클릭 이벤트를 뒤에 배치된 레이아웃에 전달되지 않게 하기
 https://fimtrus.tistory.com/entry/Android-%ED%81%B4%EB%A6%AD-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EB%92%A4%EC%97%90-%EB%B0%B0%EC%B9%98%EB%90%9C-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%97%90-%EC%A0%84%EB%8B%AC%EB%90%98%EC%A7%80-%EC%95%8A%EA%B2%8C-%ED%95%98%EA%B8%B0
 
+(둥근/사각) 테두리 있는 ImageView 간단히 만들기
+https://ddangeun.tistory.com/129
 
-https://seogwipo.tistory.com/entry/FireBase-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4-%EB%A6%AC%EC%8A%A4%EB%84%88-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+Glide 라이브러리 테두리 속성
+https://pluu.github.io/blog/android/2020/04/28/glide-fail-case/
+
+How to get a context in a recycler view adapter
+https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter
+
+
+
+
 

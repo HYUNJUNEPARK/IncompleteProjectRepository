@@ -1,11 +1,13 @@
 package com.june.daangnmarket.chatlist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.june.daangnmarket.R
+import com.june.daangnmarket.share.DBKey.Companion.TAG
 
 class ChatListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

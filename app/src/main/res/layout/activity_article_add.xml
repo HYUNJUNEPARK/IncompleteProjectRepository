@@ -52,6 +52,7 @@
         android:id="@+id/photoImageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:padding="1dp"
         android:background="@drawable/imageview_border_black"
         android:layout_margin="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -99,11 +100,11 @@
         app:layout_constraintTop_toBottomOf="@id/titleEditText" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/itemDescription"
+        android:id="@+id/itemDescriptionEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         android:hint="게시글 내용을 작성해 주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요"
         app:layout_constraintTop_toBottomOf="@id/imageAddButton"
         android:background="@color/transparent"

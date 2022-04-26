@@ -2,6 +2,7 @@ package com.june.daangnmarket.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,11 @@ import com.june.daangnmarket.activity.AddArticleActivity
 import com.june.daangnmarket.databinding.FragmentHomeBinding
 import com.june.daangnmarket.share.DBKey.Companion.CREATED_AT
 import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.share.DBKey.Companion.DESCRIPTION
 import com.june.daangnmarket.share.DBKey.Companion.IMAGE_URL
 import com.june.daangnmarket.share.DBKey.Companion.PRICE
 import com.june.daangnmarket.share.DBKey.Companion.SELLER_ID
+import com.june.daangnmarket.share.DBKey.Companion.TAG
 import com.june.daangnmarket.share.DBKey.Companion.TITLE
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
@@ -28,12 +31,15 @@ class HomeFragment : Fragment() {
         get() = _binding!!
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var articleDB: DatabaseReference
-
-
     private val articleList = mutableListOf<ArticleModel>()
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             articleList.clear()
+
+            if (snapshot.value == null) {
+                binding.progressBar.visibility = View.INVISIBLE
+                return
+            }
 
              for (article in snapshot.children.reversed()) {
                 //{createdAt=1650543, sellerId=, price=988745, imageUrl=, title=test}
@@ -41,16 +47,18 @@ class HomeFragment : Fragment() {
                 val createdAt = articleMap[CREATED_AT].toString()
                 val imageUrl = articleMap[IMAGE_URL]
                 val price = articleMap[PRICE]
-                val sellerId = articleMap[SELLER_ID]
                 val title = articleMap[TITLE]
-                
+                val sellerId = articleMap[SELLER_ID]
+                val description = articleMap[DESCRIPTION]
                 val articleModel = ArticleModel(
                     createdAt!!.toLong(),
                     imageUrl,
                     price,
                     sellerId,
-                    title
+                    title,
+                    description
                 )
+
                 articleList.add(articleModel)
                 articleAdapter.submitList(articleList)
 
@@ -64,6 +72,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        Log.d(TAG, "HomeFragment onCreateView: ")
         return binding.root
     }
 
@@ -89,7 +98,6 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-
         articleDB.removeEventListener(listener)
     }
 

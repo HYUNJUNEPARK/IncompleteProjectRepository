@@ -2,6 +2,7 @@ package com.june.daangnmarket.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityStartBinding
 import com.june.daangnmarket.network.NetworkConnection
+import com.june.daangnmarket.share.DBKey.Companion.TAG
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.email
 import com.june.daangnmarket.share.FirebaseVar.Companion.initEmail
@@ -25,7 +27,6 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         networkCheck.register()
 
         initSignInWithoutAuthButton()
@@ -35,7 +36,6 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         networkCheck.unregister()
     }
 

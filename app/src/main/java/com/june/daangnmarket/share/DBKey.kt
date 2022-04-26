@@ -10,5 +10,6 @@ class DBKey {
         const val PRICE = "price"
         const val SELLER_ID = "sellerId"
         const val TITLE = "title"
+        const val DESCRIPTION = "description"
     }
 }
