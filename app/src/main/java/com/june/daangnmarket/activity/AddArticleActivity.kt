@@ -23,6 +23,9 @@ import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.share.FirebaseVar.Companion.storage
 import com.june.daangnmarket.share.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddArticleActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleAddBinding.inflate(layoutInflater) }

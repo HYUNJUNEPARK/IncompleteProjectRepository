@@ -1,5 +1,6 @@
 package com.june.daangnmarket.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,9 @@ import com.june.daangnmarket.share.DBKey.Companion.TAG
 import com.june.daangnmarket.share.DBKey.Companion.TITLE
 import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -35,12 +39,10 @@ class HomeFragment : Fragment() {
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             articleList.clear()
-
             if (snapshot.value == null) {
                 binding.progressBar.visibility = View.INVISIBLE
                 return
             }
-
              for (article in snapshot.children.reversed()) {
                 //{createdAt=1650543, sellerId=, price=988745, imageUrl=, title=test}
                 val articleMap = article.value as HashMap<String, String>
@@ -58,7 +60,6 @@ class HomeFragment : Fragment() {
                     title,
                     description
                 )
-
                 articleList.add(articleModel)
                 articleAdapter.submitList(articleList)
 
@@ -102,11 +103,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        articleAdapter = ArticleAdapter()
+        val context: Context = requireContext()
+        articleAdapter = ArticleAdapter(context)
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.articleRecyclerView.adapter = articleAdapter
         articleDB = firebaseDBReference.child(DB_ARTICLES)
-        articleDB.addValueEventListener(listener)
+
+        CoroutineScope(Dispatchers.Default).launch {
+            articleDB.addValueEventListener(listener)
+        }
     }
 
     private fun setVisibilityFloatingButton() {
