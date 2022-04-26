@@ -84,5 +84,6 @@ https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-
 
 
 
-
+java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+https://eso0609.tistory.com/72
 

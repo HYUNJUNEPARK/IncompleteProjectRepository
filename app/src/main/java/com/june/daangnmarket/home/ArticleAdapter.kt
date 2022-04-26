@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
@@ -17,6 +18,10 @@ import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
 import com.june.daangnmarket.share.DBKey.Companion.TAG
 import com.june.daangnmarket.share.FirebaseVar.Companion.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Date
 import java.text.SimpleDateFormat
 
@@ -39,24 +44,21 @@ class ArticleAdapter : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder> (dif
             binding.dateTextView.text = format.format(date).toString()
             binding.priceTextView.text = articleModel.price
 
-
-                val storageRef = storage.reference
-                val imgRef: StorageReference = storageRef.child("images_daangn/${articleModel.imageUri}.jpg")
-
-
-//                imgRef.downloadUrl
-//                    .addOnSuccessListener { uri ->
-//                        Glide.with(binding.thumbnailImageView)
-//                            .load(uri)
-//                            .transform(CenterCrop(), RoundedCorners(18))
-//                            .into(binding.thumbnailImageView)
-//                        binding.progressBar.visibility = View.INVISIBLE
-//
-//                    }
-//                    .addOnFailureListener { e ->
-//                        Log.d(TAG, "Error: $e")
-//                    }
-
+            val storageRef = storage.reference
+            val imgRef: StorageReference = storageRef.child("images_daangn/${articleModel.imageUri}.jpg")
+            CoroutineScope(Dispatchers.IO).launch {
+                imgRef.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        Glide.with(binding.thumbnailImageView)
+                            .load(uri)
+                            .transform(CenterCrop(), RoundedCorners(18))
+                            .into(binding.thumbnailImageView)
+                        binding.progressBar.visibility = View.INVISIBLE
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d(TAG, "Error: $e")
+                    }
+            }
         }
     }
 
