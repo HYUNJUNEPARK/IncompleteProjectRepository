@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiManager
 import android.widget.Toast
+import com.june.daangnmarket.dialog.UnConnectionDialog
 
 class NetworkConnection(private val context: Context) : ConnectivityManager.NetworkCallback() {
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -16,6 +17,9 @@ class NetworkConnection(private val context: Context) : ConnectivityManager.Netw
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .build()
+    //lateinit var myDialog: AlertDialog
+
+
     private val unConnectionDialog: AlertDialog by lazy {
         AlertDialog.Builder(context)
             .setTitle("네트워크 연결 안됨")
@@ -26,6 +30,9 @@ class NetworkConnection(private val context: Context) : ConnectivityManager.Netw
             }
             .create()
     }
+
+
+
 
     //NetworkCallback 등록
     fun register() {
@@ -42,9 +49,18 @@ class NetworkConnection(private val context: Context) : ConnectivityManager.Netw
         super.onAvailable(network)
         if (getConnectivityStatus() == null) {
             Toast.makeText(context, "Network Null", Toast.LENGTH_SHORT).show()
-            unConnectionDialog.show()
+
+//            val myDialog = UnConnectionDialog(context)
+//            myDialog.unConnectionDialog.show()
+
+
+            //unConnectionDialog.show()
+
+
         } else {
             unConnectionDialog.dismiss()
+
+
         }
     }
 
@@ -52,7 +68,12 @@ class NetworkConnection(private val context: Context) : ConnectivityManager.Netw
     override fun onLost(network: Network) {
         super.onLost(network)
 
+
+
         unConnectionDialog.show()
+
+
+
     }
 
     //NetworkCallback 해제

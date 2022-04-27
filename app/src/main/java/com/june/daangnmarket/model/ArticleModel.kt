@@ -1,4 +1,4 @@
-package com.june.daangnmarket.home
+package com.june.daangnmarket.model
 
 import java.io.Serializable
 

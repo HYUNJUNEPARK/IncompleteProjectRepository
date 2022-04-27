@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.june.daangnmarket.databinding.ActivitySignupBinding
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 
 class SignUpActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySignupBinding.inflate(layoutInflater) }

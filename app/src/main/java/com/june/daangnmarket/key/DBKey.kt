@@ -1,4 +1,4 @@
-package com.june.daangnmarket.share
+package com.june.daangnmarket.key
 
 class DBKey {
     companion object {

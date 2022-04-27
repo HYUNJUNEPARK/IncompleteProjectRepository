@@ -1,16 +1,14 @@
 package com.june.daangnmarket.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.june.daangnmarket.R
-import com.june.daangnmarket.chatlist.ChatListFragment
+import com.june.daangnmarket.fragment.ChatListFragment
 import com.june.daangnmarket.databinding.ActivityMainBinding
-import com.june.daangnmarket.home.HomeFragment
-import com.june.daangnmarket.mypage.MyPageFragment
+import com.june.daangnmarket.fragment.HomeFragment
+import com.june.daangnmarket.fragment.MyPageFragment
 import com.june.daangnmarket.network.NetworkConnection
-import com.june.daangnmarket.share.DBKey.Companion.TAG
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -37,14 +35,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         networkCheck.unregister()
-    }
-
-    ///TODO make popup
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-
-
     }
 
     private fun initFragment(){

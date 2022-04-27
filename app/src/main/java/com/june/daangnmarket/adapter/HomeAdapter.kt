@@ -1,4 +1,4 @@
-package com.june.daangnmarket.home
+package com.june.daangnmarket.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -16,15 +16,18 @@ import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.R
 import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
-import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.FirebaseVar.Companion.storage
+import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.key.DBKey.Companion.TAG
+import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 
-class ArticleAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder> (diffUtil) {
+class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (
+    diffUtil
+) {
     inner class ViewHolder(private val binding: ItemAriticleBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(articleModel: ArticleModel) {
             val format = SimpleDateFormat("MM월 dd일")
@@ -63,12 +66,12 @@ class ArticleAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, A
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemAriticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ArticleAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

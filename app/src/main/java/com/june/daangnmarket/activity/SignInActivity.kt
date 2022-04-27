@@ -3,20 +3,13 @@ package com.june.daangnmarket.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityStartBinding
+import com.june.daangnmarket.dialog.SignInDialog
+import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.network.NetworkConnection
-import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
-import com.june.daangnmarket.share.FirebaseVar.Companion.email
-import com.june.daangnmarket.share.FirebaseVar.Companion.initEmail
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.email
 
 class SignInActivity : AppCompatActivity() {
     private val binding by lazy { ActivityStartBinding.inflate(layoutInflater) }
@@ -27,10 +20,10 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        networkCheck.register()
 
+        networkCheck.register()
         initSignInWithoutAuthButton()
-        initSignInButton()
+        initSignUpButton()
         initOpenSignInDialog()
     }
 
@@ -43,14 +36,15 @@ class SignInActivity : AppCompatActivity() {
         binding.sigInWithoutAuthButton.setOnClickListener {
             auth.signOut()
             email = null
-
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            this.finish()
         }
     }
 
-    private fun initSignInButton() {
+    private fun initSignUpButton() {
         binding.signUpButton.setOnClickListener {
+            Log.d(TAG, "initSignInButton: Clicked")
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
@@ -58,42 +52,8 @@ class SignInActivity : AppCompatActivity() {
 
     private fun initOpenSignInDialog() {
         binding.signInBtn.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_signin, null)
-            val mDialogBuilder = AlertDialog.Builder(this).setView(mDialogView)
-            val mDialog = mDialogBuilder.show()
-            val closeButton = mDialogView.findViewById<Button>(R.id.closeButton)
-            val signInButton = mDialogView.findViewById<Button>(R.id.signInBtn)
-
-            signInButton.setOnClickListener {
-                val emailView = mDialogView.findViewById<EditText>(R.id.emailEditText)
-                val pwView = mDialogView.findViewById<EditText>(R.id.passwordEditText)
-                val email = emailView.text.toString()
-                val pw = pwView.text.toString()
-
-                if (email == "" || pw == "") {
-                    Toast.makeText(this, "정보를 정확히 입력해주세요.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                Thread {
-                    auth.signInWithEmailAndPassword(email, pw)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                initEmail()
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                mDialog.dismiss()
-                            } else {
-                                runOnUiThread {
-                                    Toast.makeText(this, "오류 발생", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-                }.start()
-            }
-            closeButton.setOnClickListener {
-                mDialog.dismiss()
-            }
+            val myDialog = SignInDialog()
+            myDialog.signInDialog(this)
         }
     }
 }

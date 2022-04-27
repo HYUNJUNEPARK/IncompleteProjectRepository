@@ -94,3 +94,7 @@ java.lang.IllegalArgumentException: You cannot start a load for a destroyed acti
 글라이드 컨텍스트 팁
 https://eso0609.tistory.com/72
 
+
+Fragment에서 Back Press 처리하기(with. OnBackPressedDispatcher)
+https://readystory.tistory.com/186
+

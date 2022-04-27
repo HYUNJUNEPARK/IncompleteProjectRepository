@@ -1,39 +1,38 @@
-package com.june.daangnmarket.home
+package com.june.daangnmarket.fragment
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.june.daangnmarket.activity.AddArticleActivity
+import com.june.daangnmarket.adapter.HomeAdapter
 import com.june.daangnmarket.databinding.FragmentHomeBinding
-import com.june.daangnmarket.share.DBKey.Companion.CREATED_AT
-import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
-import com.june.daangnmarket.share.DBKey.Companion.DESCRIPTION
-import com.june.daangnmarket.share.DBKey.Companion.IMAGE_URL
-import com.june.daangnmarket.share.DBKey.Companion.PRICE
-import com.june.daangnmarket.share.DBKey.Companion.SELLER_ID
-import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.DBKey.Companion.TITLE
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
-import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
+import com.june.daangnmarket.key.DBKey.Companion.CREATED_AT
+import com.june.daangnmarket.key.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.key.DBKey.Companion.DESCRIPTION
+import com.june.daangnmarket.key.DBKey.Companion.IMAGE_URL
+import com.june.daangnmarket.key.DBKey.Companion.PRICE
+import com.june.daangnmarket.key.DBKey.Companion.SELLER_ID
+import com.june.daangnmarket.key.DBKey.Companion.TITLE
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
+import com.june.daangnmarket.model.ArticleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding
         get() = _binding!!
-    private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var homeAdapter: HomeAdapter
     private lateinit var articleDB: DatabaseReference
     private val articleList = mutableListOf<ArticleModel>()
     private val listener = object : ValueEventListener {
@@ -61,8 +60,7 @@ class HomeFragment : Fragment() {
                     description
                 )
                 articleList.add(articleModel)
-                articleAdapter.submitList(articleList)
-
+                homeAdapter.submitList(articleList)
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
@@ -82,17 +80,17 @@ class HomeFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
 
         initRecyclerView()
-        setVisibilityFloatingButton()
+        visibilityFloatingButton()
 
         binding.addFloatingButton.setOnClickListener {
-                val intent = Intent(requireContext(), AddArticleActivity::class.java)
-                startActivity(intent)
+            val intent = Intent(requireContext(), AddArticleActivity::class.java)
+            startActivity(intent)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        articleAdapter.notifyDataSetChanged()
+        homeAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroy() {
@@ -103,9 +101,9 @@ class HomeFragment : Fragment() {
 
     private fun initRecyclerView() {
         val context: Context = requireContext()
-        articleAdapter = ArticleAdapter(context)
+        homeAdapter = HomeAdapter(context)
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.articleRecyclerView.adapter = articleAdapter
+        binding.articleRecyclerView.adapter = homeAdapter
         articleDB = firebaseDBReference.child(DB_ARTICLES)
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -113,7 +111,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setVisibilityFloatingButton() {
+    private fun visibilityFloatingButton() {
         if (auth.currentUser != null) {
             binding.addFloatingButton.visibility = View.VISIBLE
         } else {

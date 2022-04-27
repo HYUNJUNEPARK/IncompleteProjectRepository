@@ -17,15 +17,12 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
-import com.june.daangnmarket.home.ArticleModel
-import com.june.daangnmarket.share.DBKey.Companion.DB_ARTICLES
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
-import com.june.daangnmarket.share.FirebaseVar.Companion.firebaseDBReference
-import com.june.daangnmarket.share.FirebaseVar.Companion.storage
-import com.june.daangnmarket.share.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.key.DBKey.Companion.DB_ARTICLES
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
+import com.june.daangnmarket.key.FirebaseVar.Companion.storage
+import com.june.daangnmarket.key.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
 
 class AddArticleActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleAddBinding.inflate(layoutInflater) }
@@ -123,6 +120,7 @@ class AddArticleActivity : AppCompatActivity() {
             Thread {
                 articleDB.push().setValue(model)
             }.start()
+
             uploadImgToStorage(imgId)
         }
     }
@@ -147,6 +145,9 @@ class AddArticleActivity : AppCompatActivity() {
                 }
             }
     }
+
+
+    //TODO
 
     private fun showPermissionPopup() {
         AlertDialog.Builder(this)

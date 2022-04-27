@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityArticleDetailBinding
-import com.june.daangnmarket.home.ArticleModel
-import com.june.daangnmarket.share.DBKey.Companion.TAG
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
-import com.june.daangnmarket.share.FirebaseVar.Companion.storage
+import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.key.DBKey.Companion.TAG
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

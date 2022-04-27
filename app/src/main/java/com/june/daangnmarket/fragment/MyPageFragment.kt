@@ -1,19 +1,17 @@
-package com.june.daangnmarket.mypage
+package com.june.daangnmarket.fragment
 
-import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.june.daangnmarket.R
+import com.june.daangnmarket.activity.SignInActivity
 import com.june.daangnmarket.databinding.FragmentMyPageBinding
-import com.june.daangnmarket.share.FirebaseVar.Companion.auth
-import com.june.daangnmarket.share.FirebaseVar.Companion.email
+import com.june.daangnmarket.dialog.DeleteAccountDialog
+import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.email
 
-class MyPageFragment : Fragment() {
+class MyPageFragment : BaseFragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding
         get() = _binding!!
@@ -25,9 +23,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.emailTextView.text = email
-
         initNoMemberCover()
         initCoverVisibility()
         initDeleteButton()
@@ -49,36 +45,16 @@ class MyPageFragment : Fragment() {
         binding.signOutButton.setOnClickListener {
             auth.signOut()
             email = null
+            val intent = Intent(requireContext(), SignInActivity::class.java)
+            startActivity(intent)
             activity?.finish()
         }
     }
 
     private fun initDeleteButton() {
         binding.deleteAccountButton.setOnClickListener {
-            val mDialogView: View = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_delete, null)
-            val closeButton: Button =  mDialogView.findViewById<Button>(R.id.closeButton)
-            val deleteButton: Button = mDialogView.findViewById<Button>(R.id.deleteButton)
-
-            val mDialogBuilder = AlertDialog.Builder(requireContext()).setView(mDialogView)
-            val mAlertDialog = mDialogBuilder.show()
-
-            closeButton.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-            deleteButton.setOnClickListener { view ->
-                val user = auth.currentUser!!
-                user.delete()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            email = null
-                            Toast.makeText(requireContext(), "계정 삭제", Toast.LENGTH_SHORT)
-                            activity?.finish()
-                        }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(requireContext(), "계정 삭제 실패", Toast.LENGTH_SHORT).show()
-                    }
-            }
+            val myDialog = DeleteAccountDialog()
+            myDialog.deleteAccountDialog(requireActivity(), requireContext())
         }
     }
 

@@ -124,6 +124,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <LinearLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/did3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/orange"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
@@ -131,6 +140,7 @@
         android:layout_margin="20dp"
         android:text="product price"
         android:textSize="18sp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/wonTextView" />
@@ -141,11 +151,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:text="원"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/priceTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/priceTextView"
         app:layout_constraintTop_toTopOf="@id/priceTextView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
