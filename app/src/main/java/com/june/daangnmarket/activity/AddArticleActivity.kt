@@ -17,7 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
 import com.june.daangnmarket.dialog.PermissionDialog
-import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.model.ChatListItemModel
 import com.june.daangnmarket.key.DBKey.Companion.DB_ARTICLES
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
@@ -117,7 +117,7 @@ class AddArticleActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val model = ArticleModel(createAt, imageUri, price, sellerId, title, itemDescription)
+            val model = ChatListItemModel(createAt, imageUri, price, sellerId, title, itemDescription)
             val imgId = sellerId + createAt
             val articleDB = firebaseDBReference.child(DB_ARTICLES)
 

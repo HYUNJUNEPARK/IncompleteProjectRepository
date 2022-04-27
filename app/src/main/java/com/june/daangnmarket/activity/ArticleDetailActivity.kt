@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityArticleDetailBinding
-import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.key.DBKey.Companion.CHILD_CHAT
+import com.june.daangnmarket.key.DBKey.Companion.DB_USERS
+import com.june.daangnmarket.model.ChatListItemModel
 import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
+import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
+import com.june.daangnmarket.model.ChatListItemModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,22 +25,54 @@ import java.text.SimpleDateFormat
 
 class ArticleDetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleDetailBinding.inflate(layoutInflater) }
-    lateinit var articleModel: ArticleModel
+    lateinit var articleModel: ChatListItemModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         val model = intent.getSerializableExtra("model")
-        articleModel = model as ArticleModel
+        articleModel = model as ChatListItemModel
 
         initViews()
         initDateTextView()
         initImageView(this)
         initModifyButton()
+        initChatFloatingButton()
+    }
+
+    private fun initChatFloatingButton() {
+        //TODO 중복변수
+        val articleWriterId = articleModel.sellerId
+        val userId: String? = auth.currentUser?.uid
+
+        if (articleWriterId == userId || userId == null) {
+            binding.sendMessageFloatingButton.visibility = View.INVISIBLE
+        }
+
+        binding.sendMessageFloatingButton.setOnClickListener {
+            val chatRoom = ChatListItemModel(
+                buyerId = userId!!,
+                sellerId = articleWriterId!!,
+                itemTitle = articleModel.title!!,
+                key = "${userId}_${articleWriterId}"
+            )
+            val userDB = firebaseDBReference.child(DB_USERS)
+
+            userDB.child(auth.currentUser.uid)
+                .child(CHILD_CHAT)
+                .push()
+                .setValue(chatRoom)
+            userDB.child(articleWriterId)
+                .child(CHILD_CHAT)
+                .push()
+                .setValue(chatRoom)
+            Toast.makeText(this, "채팅방 생성", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initModifyButton() {
+        //TODO 중복변수
         val articleWriterId = articleModel.sellerId
         val userId: String? = auth.currentUser?.uid
 

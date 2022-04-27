@@ -23,7 +23,7 @@ import com.june.daangnmarket.key.DBKey.Companion.SELLER_ID
 import com.june.daangnmarket.key.DBKey.Companion.TITLE
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
-import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.model.ChatListItemModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment() {
         get() = _binding!!
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var articleDB: DatabaseReference
-    private val articleList = mutableListOf<ArticleModel>()
+    private val articleList = mutableListOf<ChatListItemModel>()
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             articleList.clear()
@@ -51,7 +51,7 @@ class HomeFragment : BaseFragment() {
                 val title = articleMap[TITLE]
                 val sellerId = articleMap[SELLER_ID]
                 val description = articleMap[DESCRIPTION]
-                val articleModel = ArticleModel(
+                val articleModel = ChatListItemModel(
                     createdAt!!.toLong(),
                     imageUrl,
                     price,

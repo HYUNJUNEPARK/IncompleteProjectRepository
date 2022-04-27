@@ -16,7 +16,7 @@ import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.R
 import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
-import com.june.daangnmarket.model.ArticleModel
+import com.june.daangnmarket.model.ChatListItemModel
 import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import kotlinx.coroutines.CoroutineScope
@@ -25,9 +25,9 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 
-class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (diffUtil) {
+class HomeAdapter(val fragmentContext: Context) : ListAdapter<ChatListItemModel, HomeAdapter.ViewHolder> (diffUtil) {
     inner class ViewHolder(private val binding: ItemAriticleBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(articleModel: ArticleModel) {
+        fun bind(articleModel: ChatListItemModel) {
             val format = SimpleDateFormat("MM월 dd일")
             val date = Date(articleModel.createdAt!!.toLong())
             binding.titleTextView.text = articleModel.title
@@ -43,7 +43,7 @@ class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, Home
             loadImgFromStorageAndSetByGlide(articleModel)
         }
 
-        private fun loadImgFromStorageAndSetByGlide(articleModel: ArticleModel) {
+        private fun loadImgFromStorageAndSetByGlide(articleModel: ChatListItemModel) {
             val storageRef = storage.reference
             val imgRef: StorageReference = storageRef.child("images_daangn/${articleModel.imageUrl}.jpg")
 
@@ -74,11 +74,11 @@ class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, Home
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ArticleModel>() {
-            override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<ChatListItemModel>() {
+            override fun areItemsTheSame(oldItem: ChatListItemModel, newItem: ChatListItemModel): Boolean {
                 return oldItem.createdAt == newItem.createdAt
             }
-            override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
+            override fun areContentsTheSame(oldItem: ChatListItemModel, newItem: ChatListItemModel): Boolean {
                 return oldItem == newItem
             }
         }
