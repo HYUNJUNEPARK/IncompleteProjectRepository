@@ -25,9 +25,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 
-class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (
-    diffUtil
-) {
+class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (diffUtil) {
     inner class ViewHolder(private val binding: ItemAriticleBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(articleModel: ArticleModel) {
             val format = SimpleDateFormat("MM월 dd일")

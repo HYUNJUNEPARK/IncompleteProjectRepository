@@ -1,7 +1,6 @@
 package com.june.daangnmarket.activity
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,12 +16,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.databinding.ActivityArticleAddBinding
+import com.june.daangnmarket.dialog.PermissionDialog
 import com.june.daangnmarket.model.ArticleModel
 import com.june.daangnmarket.key.DBKey.Companion.DB_ARTICLES
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import com.june.daangnmarket.key.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddArticleActivity : AppCompatActivity() {
     private val binding by lazy { ActivityArticleAddBinding.inflate(layoutInflater) }
@@ -45,7 +48,8 @@ class AddArticleActivity : AppCompatActivity() {
                     startContentProvider()
                 }
                 shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
-                    showPermissionPopup()
+                    val myDialog = PermissionDialog()
+                    myDialog.showPermissionPopup(this)
                 }
                 else -> {
                     requestPermissions(
@@ -117,10 +121,9 @@ class AddArticleActivity : AppCompatActivity() {
             val imgId = sellerId + createAt
             val articleDB = firebaseDBReference.child(DB_ARTICLES)
 
-            Thread {
+            CoroutineScope(Dispatchers.IO).launch {
                 articleDB.push().setValue(model)
-            }.start()
-
+            }
             uploadImgToStorage(imgId)
         }
     }
@@ -130,38 +133,19 @@ class AddArticleActivity : AppCompatActivity() {
         val imgRef: StorageReference = storageRef.child("images_daangn/$id.jpg")
         val file_uri: Uri = filePath ?: return
 
-        imgRef.putFile(file_uri)
-            .addOnSuccessListener {
-                runOnUiThread {
+        CoroutineScope(Dispatchers.IO).launch {
+            imgRef.putFile(file_uri)
+                .addOnSuccessListener {
                     binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddArticleActivity, "업로드 완료", Toast.LENGTH_SHORT).show()
                     finish()
+
                 }
-            }
-            .addOnFailureListener { e ->
-                runOnUiThread {
+                .addOnFailureListener { e ->
                     binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddArticleActivity, "Error : $e", Toast.LENGTH_SHORT).show()
                 }
-            }
-    }
+        }
 
-
-    //TODO
-
-    private fun showPermissionPopup() {
-        AlertDialog.Builder(this)
-            .setTitle("권한이 필요합니다.")
-            .setMessage("사진을 가져오기 위해 필요합니다.")
-            .setPositiveButton("동의") { _, _ ->
-                requestPermissions(
-                    arrayOf(
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    ),
-                    REQUEST_READ_EXTERNAL_STORAGE
-                )
-            }
-            .create()
-            .show()
     }
 }

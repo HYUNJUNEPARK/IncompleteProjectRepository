@@ -16,7 +16,6 @@ class DeleteAccountDialog {
         val mDialogView: View = LayoutInflater.from(context).inflate(R.layout.dialog_delete, null)
         val closeButton: Button =  mDialogView.findViewById<Button>(R.id.closeButton)
         val deleteButton: Button = mDialogView.findViewById<Button>(R.id.deleteButton)
-
         val mDialogBuilder = AlertDialog.Builder(context).setView(mDialogView)
         val mAlertDialog = mDialogBuilder.show()
 
