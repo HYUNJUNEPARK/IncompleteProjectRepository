@@ -38,6 +38,17 @@
                 app:layout_constraintStart_toEndOf="@id/profileImageView"
                 app:layout_constraintTop_toTopOf="@id/profileImageView"
                 tools:text="sample@gmail.com" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/profileModifyButton"
+                    android:text="프로필 수정"
+                    android:background="@color/orange"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

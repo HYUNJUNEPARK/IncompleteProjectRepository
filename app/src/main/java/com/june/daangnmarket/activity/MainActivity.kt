@@ -39,6 +39,14 @@ class MainActivity : AppCompatActivity() {
         networkCheck.unregister()
     }
 
+    ///TODO make popup
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+
+
+    }
+
     private fun initFragment(){
         binding.bottomNavigationView.setOnItemSelectedListener{ menu ->
             when (menu.itemId) {

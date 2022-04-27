@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class ArticleModel(
     val createdAt: Long?,
-    val imageUri: String?,
+    val imageUrl: String?,
     val price: String?,
     val sellerId: String?,
     val title: String?,

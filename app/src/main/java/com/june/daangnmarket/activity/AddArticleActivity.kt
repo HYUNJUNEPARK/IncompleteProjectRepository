@@ -132,22 +132,20 @@ class AddArticleActivity : AppCompatActivity() {
         val imgRef: StorageReference = storageRef.child("images_daangn/$id.jpg")
         val file_uri: Uri = filePath ?: return
 
-        Thread {
-            imgRef.putFile(file_uri)
-                .addOnSuccessListener {
-                    runOnUiThread {
-                        binding.progressBar.visibility = View.INVISIBLE
-                        Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
+        imgRef.putFile(file_uri)
+            .addOnSuccessListener {
+                runOnUiThread {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
-                .addOnFailureListener { e ->
-                    runOnUiThread {
-                        binding.progressBar.visibility = View.INVISIBLE
-                        Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
-                    }
+            }
+            .addOnFailureListener { e ->
+                runOnUiThread {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    Toast.makeText(this, "Error : $e", Toast.LENGTH_SHORT).show()
                 }
-        }.start()
+            }
     }
 
     private fun showPermissionPopup() {

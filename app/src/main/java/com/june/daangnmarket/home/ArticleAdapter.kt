@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
+import com.june.daangnmarket.R
 import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
 import com.june.daangnmarket.share.DBKey.Companion.TAG
@@ -43,18 +44,20 @@ class ArticleAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, A
 
         private fun loadImgFromStorageAndSetByGlide(articleModel: ArticleModel) {
             val storageRef = storage.reference
-            val imgRef: StorageReference = storageRef.child("images_daangn/${articleModel.imageUri}.jpg")
+            val imgRef: StorageReference = storageRef.child("images_daangn/${articleModel.imageUrl}.jpg")
+
             CoroutineScope(Dispatchers.IO).launch {
                 imgRef.downloadUrl
                     .addOnSuccessListener { uri ->
                         Glide.with(fragmentContext)
                             .load(uri)
                             .transform(CenterCrop(), RoundedCorners(18))
+                            .error(R.drawable.ic_baseline_cancel_24)
                             .into(binding.thumbnailImageView)
                         binding.progressBar.visibility = View.INVISIBLE
                     }
                     .addOnFailureListener { e ->
-                        Log.d(TAG, "Error: $e")
+                        Log.d(TAG, "addOnFailureListener Error: $e")
                     }
             }
         }

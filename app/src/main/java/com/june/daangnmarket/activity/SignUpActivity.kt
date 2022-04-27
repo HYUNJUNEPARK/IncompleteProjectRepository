@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.june.daangnmarket.databinding.ActivitySignupBinding
-import com.june.daangnmarket.share.FirebaseVar
+import com.june.daangnmarket.share.FirebaseVar.Companion.auth
 
 class SignUpActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySignupBinding.inflate(layoutInflater) }
@@ -24,7 +24,7 @@ class SignUpActivity : AppCompatActivity() {
             val pw = binding.passwordEditView.text.toString()
 
             Thread {
-                FirebaseVar.auth.createUserWithEmailAndPassword(email, pw)
+                auth.createUserWithEmailAndPassword(email, pw)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             runOnUiThread {

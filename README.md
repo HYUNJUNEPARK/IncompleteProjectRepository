@@ -79,11 +79,18 @@ https://ddangeun.tistory.com/129
 Glide 라이브러리 테두리 속성
 https://pluu.github.io/blog/android/2020/04/28/glide-fail-case/
 
+Glide 라이브러리 속성
+https://leveloper.tistory.com/162
+
+파이어베이스 스토어 프로필 이미지
+https://daldalhanstory.tistory.com/201
+
 How to get a context in a recycler view adapter
 https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter
 
 
 
 java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity
+글라이드 컨텍스트 팁
 https://eso0609.tistory.com/72
 
