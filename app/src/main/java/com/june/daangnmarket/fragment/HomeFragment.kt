@@ -24,7 +24,9 @@ import com.june.daangnmarket.key.DBKey.Companion.SELLER_ID
 import com.june.daangnmarket.key.DBKey.Companion.TITLE
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
+import com.june.daangnmarket.model.ArticleModel
 import com.june.daangnmarket.model.ChatListItemModel
+import com.june.daangnmarket.model.ChatListModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +37,7 @@ class HomeFragment : BaseFragment() {
         get() = _binding!!
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var articleDB: DatabaseReference
-    private val articleList = mutableListOf<ChatListItemModel>()
+    private val articleList = mutableListOf<ArticleModel>()
     private val listener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             articleList.clear()
@@ -52,7 +54,8 @@ class HomeFragment : BaseFragment() {
                 val title = articleMap[TITLE]
                 val sellerId = articleMap[SELLER_ID]
                 val description = articleMap[DESCRIPTION]
-                val articleModel = ChatListItemModel(
+
+                val articleModel = ArticleModel(
                     createdAt!!.toLong(),
                     imageUrl,
                     price,
@@ -77,11 +80,8 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.progressBar.visibility = View.VISIBLE
-
         val mGlideRequestManager = Glide.with(this)
-
         initRecyclerView(mGlideRequestManager)
         visibilityFloatingButton()
         binding.addFloatingButton.setOnClickListener {
@@ -102,7 +102,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initRecyclerView(mGlideRequestManager: RequestManager) {
-
         val mGlideRequestManager = mGlideRequestManager
         homeAdapter = HomeAdapter(mGlideRequestManager)
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)

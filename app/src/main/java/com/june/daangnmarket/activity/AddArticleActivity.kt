@@ -23,6 +23,7 @@ import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import com.june.daangnmarket.key.RequestCode.Companion.REQUEST_READ_EXTERNAL_STORAGE
+import com.june.daangnmarket.model.ArticleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -117,7 +118,7 @@ class AddArticleActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val model = ChatListItemModel(createAt, imageUri, price, sellerId, title, itemDescription)
+            val model = ArticleModel(createAt, imageUri, price, sellerId, title, itemDescription)
             val imgId = sellerId + createAt
             val articleDB = firebaseDBReference.child(DB_ARTICLES)
 
