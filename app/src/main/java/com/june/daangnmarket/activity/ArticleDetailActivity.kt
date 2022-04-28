@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityArticleDetailBinding
 import com.june.daangnmarket.key.DBKey.Companion.CHILD_CHATROOM
@@ -32,10 +33,11 @@ class ArticleDetailActivity : AppCompatActivity() {
 
         val model = intent.getSerializableExtra("model")
         articleModel = model as ArticleModel
+        val mGlideRequestManager: RequestManager = Glide.with(this)
 
         initViews()
         initDateTextView()
-        initImageView()
+        initImageView(mGlideRequestManager)
         initModifyButton()
         initChattingButton()
     }
@@ -105,7 +107,9 @@ class ArticleDetailActivity : AppCompatActivity() {
         binding.titleTextView.text = title
     }
 
-    private fun initImageView() {
+    private fun initImageView(mGlideRequestManager: RequestManager) {
+        val mGlideRequestManager = mGlideRequestManager
+
         val imageUri = articleModel.imageUrl
         val storageReference = storage.reference
         val imgRef = storageReference.child("images_daangn/$imageUri.jpg")
@@ -113,10 +117,8 @@ class ArticleDetailActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             imgRef.downloadUrl
                 .addOnSuccessListener { uri ->
-
-
                     //TODO Solve context Issue
-                    Glide.with(this@ArticleDetailActivity)
+                    mGlideRequestManager
                         .load(uri)
                         .error(R.drawable.ic_baseline_cancel_24)
                         .into(binding.productImageView)
@@ -129,6 +131,4 @@ class ArticleDetailActivity : AppCompatActivity() {
                 }
         }
     }
-
-
 }
