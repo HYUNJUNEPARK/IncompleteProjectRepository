@@ -13,5 +13,5 @@
     <item
         android:icon="@drawable/ic_baseline_person_pin_24"
         android:id="@+id/myPage"
-        android:title="나의 정보"/>
+        android:title="나의 당근"/>
 </menu>

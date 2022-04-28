@@ -78,10 +78,8 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.visibility = View.VISIBLE
-
         initRecyclerView()
         visibilityFloatingButton()
-
         binding.addFloatingButton.setOnClickListener {
             val intent = Intent(requireContext(), AddArticleActivity::class.java)
             startActivity(intent)

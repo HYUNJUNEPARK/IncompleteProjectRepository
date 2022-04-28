@@ -23,16 +23,19 @@ class MyPageFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.emailTextView.text = email
-        initNoMemberCover()
-        initCoverVisibility()
-        initDeleteButton()
-        initSignOutButton()
-    }
 
-    private fun initNoMemberCover() {
-        binding.noMemberCover.setOnTouchListener { view, motionEvent ->
-            true
+        if (auth.currentUser == null) {
+            binding.noMemberCover.visibility = View.VISIBLE
+            binding.noMemberCover.setOnTouchListener { _, _ ->
+                true
+            }
+        }
+        else {
+            binding.noMemberCover.visibility = View.INVISIBLE
+            binding.emailTextView.text = email
+
+            initDeleteButton()
+            initSignOutButton()
         }
     }
 
@@ -55,14 +58,6 @@ class MyPageFragment : BaseFragment() {
         binding.deleteAccountButton.setOnClickListener {
             val myDialog = DeleteAccountDialog()
             myDialog.deleteAccountDialog(requireActivity(), requireContext())
-        }
-    }
-
-    private fun initCoverVisibility() {
-        if (auth.currentUser == null) {
-            binding.noMemberCover.visibility = View.VISIBLE
-        } else {
-            binding.noMemberCover.visibility = View.INVISIBLE
         }
     }
 }

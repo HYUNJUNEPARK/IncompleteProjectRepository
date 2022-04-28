@@ -2,7 +2,6 @@ package com.june.daangnmarket.model
 
 import java.io.Serializable
 
-
 data class ArticleModel(
     val createdAt: Long?,
     val imageUrl: String?,

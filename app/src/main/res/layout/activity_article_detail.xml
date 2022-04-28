@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/did1"
+        android:id="@+id/div1"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/gray_cc"
@@ -41,10 +41,10 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/did1" />
+        app:layout_constraintTop_toBottomOf="@id/div1" />
 
     <View
-        android:id="@+id/did2"
+        android:id="@+id/div2"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="30dp"
@@ -57,10 +57,10 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/did3"
+        app:layout_constraintBottom_toTopOf="@id/div3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/did2">
+        app:layout_constraintTop_toBottomOf="@id/div2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -78,15 +78,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/modifyButton"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/ic_baseline_edit_24"
-                app:layout_constraintBottom_toBottomOf="@id/titleTextView"
                 android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/titleTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/titleTextView" />
 
@@ -114,8 +113,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/chattingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/orange"
+        android:src="@drawable/ic_baseline_message_24"
+        app:layout_constraintBottom_toTopOf="@id/div3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
     <View
-        android:id="@+id/did3"
+        android:id="@+id/div3"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginBottom="20dp"
@@ -125,37 +135,38 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/did3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/orange"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:background="@color/orange"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/div3" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="product price"
-        android:textSize="18sp"
+        android:text="product price "
         android:textColor="@color/white"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/wonTextView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/wonTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="15dp"
         android:text="원"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/priceTextView"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/priceTextView"
         app:layout_constraintTop_toTopOf="@id/priceTextView" />
 

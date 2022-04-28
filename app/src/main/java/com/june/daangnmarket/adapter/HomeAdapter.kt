@@ -59,6 +59,7 @@ class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, Home
                     }
                     .addOnFailureListener { e ->
                         Log.d(TAG, "addOnFailureListener Error: $e")
+                        binding.progressBar.visibility = View.INVISIBLE
                     }
             }
         }
