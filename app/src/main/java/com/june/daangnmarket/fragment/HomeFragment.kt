@@ -1,12 +1,13 @@
 package com.june.daangnmarket.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -78,7 +79,10 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.visibility = View.VISIBLE
-        initRecyclerView()
+
+        val mGlideRequestManager = Glide.with(this)
+
+        initRecyclerView(mGlideRequestManager)
         visibilityFloatingButton()
         binding.addFloatingButton.setOnClickListener {
             val intent = Intent(requireContext(), AddArticleActivity::class.java)
@@ -97,9 +101,10 @@ class HomeFragment : BaseFragment() {
         articleDB.removeEventListener(listener)
     }
 
-    private fun initRecyclerView() {
-        val context: Context = requireContext()
-        homeAdapter = HomeAdapter(context)
+    private fun initRecyclerView(mGlideRequestManager: RequestManager) {
+
+        val mGlideRequestManager = mGlideRequestManager
+        homeAdapter = HomeAdapter(mGlideRequestManager)
         binding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.articleRecyclerView.adapter = homeAdapter
         articleDB = firebaseDBReference.child(DB_ARTICLES)
@@ -110,7 +115,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun visibilityFloatingButton() {
-        if (auth.currentUser != null) {
+        if (auth?.currentUser != null) {
             binding.addFloatingButton.visibility = View.VISIBLE
         } else {
             binding.addFloatingButton.visibility = View.INVISIBLE

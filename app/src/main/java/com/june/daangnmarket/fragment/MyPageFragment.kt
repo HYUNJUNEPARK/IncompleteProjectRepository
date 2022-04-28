@@ -24,7 +24,7 @@ class MyPageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (auth.currentUser == null) {
+        if (auth?.currentUser == null) {
             binding.noMemberCover.visibility = View.VISIBLE
             binding.noMemberCover.setOnTouchListener { _, _ ->
                 true
@@ -33,7 +33,6 @@ class MyPageFragment : BaseFragment() {
         else {
             binding.noMemberCover.visibility = View.INVISIBLE
             binding.emailTextView.text = email
-
             initDeleteButton()
             initSignOutButton()
         }
@@ -46,7 +45,7 @@ class MyPageFragment : BaseFragment() {
 
     private fun initSignOutButton() {
         binding.signOutButton.setOnClickListener {
-            auth.signOut()
+            auth?.signOut()
             email = null
             val intent = Intent(requireContext(), SignInActivity::class.java)
             startActivity(intent)

@@ -16,7 +16,7 @@ abstract class BaseFragment: Fragment() {
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
-                val userId:String? = auth.currentUser?.uid
+                val userId:String? = auth?.currentUser?.uid
 
                 if (userId == null) { //비회원
                     activity?.finish()

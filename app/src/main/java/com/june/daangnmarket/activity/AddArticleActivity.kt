@@ -105,7 +105,7 @@ class AddArticleActivity : AppCompatActivity() {
 
             val title = binding.titleEditText.text.toString()
             val price = binding.priceEditText.text.toString()
-            val sellerId = auth.currentUser?.uid.orEmpty()
+            val sellerId = auth?.currentUser?.uid.orEmpty()
             val createAt = System.currentTimeMillis()
             val imageUri = sellerId + createAt
             val itemDescription = binding.itemDescriptionEditText.text.toString()

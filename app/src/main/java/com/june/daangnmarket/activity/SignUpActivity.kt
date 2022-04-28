@@ -24,8 +24,8 @@ class SignUpActivity : AppCompatActivity() {
             val pw = binding.passwordEditView.text.toString()
 
             Thread {
-                auth.createUserWithEmailAndPassword(email, pw)
-                    .addOnCompleteListener { task ->
+                auth?.createUserWithEmailAndPassword(email, pw)
+                    ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             runOnUiThread {
                                 binding.progressBar.visibility = View.INVISIBLE

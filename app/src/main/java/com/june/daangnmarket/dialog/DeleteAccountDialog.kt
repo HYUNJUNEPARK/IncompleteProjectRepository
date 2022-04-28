@@ -23,7 +23,7 @@ class DeleteAccountDialog {
             mAlertDialog.dismiss()
         }
         deleteButton.setOnClickListener { view ->
-            val user = auth.currentUser!!
+            val user = auth?.currentUser!!
             user.delete()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

@@ -12,19 +12,21 @@ import com.google.firebase.storage.ktx.storage
 
 class FirebaseVar: MultiDexApplication() {
     companion object {
-        lateinit var auth: FirebaseAuth
         lateinit var storage: FirebaseStorage
         lateinit var firebaseDBReference: DatabaseReference
+        lateinit var auth: FirebaseAuth
+
         var email: String? = null
         var currentUser: FirebaseUser? = null
 
         fun initEmail() {
-            currentUser = auth.currentUser
+            currentUser = auth?.currentUser
             email = currentUser!!.email
         }
     }
     override fun onCreate() {
         super.onCreate()
+
         auth = Firebase.auth
         storage = Firebase.storage
         firebaseDBReference = Firebase.database.reference

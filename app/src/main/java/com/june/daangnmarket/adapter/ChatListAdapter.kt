@@ -1,6 +1,5 @@
 package com.june.daangnmarket.adapter
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.RequestManager
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ItemChatlistBinding
@@ -21,7 +18,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ChatListAdapter(val onItemClicked: (ChatListModel) -> Unit, val context: Context) : ListAdapter<ChatListModel, ChatListAdapter.MyHolder> (diffUtil) {
+class ChatListAdapter(val onItemClicked: (ChatListModel) -> Unit, mGlideRequestManager: RequestManager) : ListAdapter<ChatListModel, ChatListAdapter.MyHolder> (diffUtil) {
+    val mGlideRequestManager = mGlideRequestManager
+
     inner class MyHolder(private val binding: ItemChatlistBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(chatListModel: ChatListModel) {
             binding.root.setOnClickListener {
@@ -39,9 +38,8 @@ class ChatListAdapter(val onItemClicked: (ChatListModel) -> Unit, val context: C
             CoroutineScope(Dispatchers.IO).launch {
                 imgRef.downloadUrl
                     .addOnSuccessListener { uri ->
-                        Glide.with(context)
+                        mGlideRequestManager
                             .load(uri)
-                            .transform(CenterCrop(), RoundedCorners(18))
                             .error(R.drawable.ic_baseline_cancel_24)
                             .into(binding.productImageView)
                         binding.imgProgressBar.visibility = View.INVISIBLE
@@ -51,15 +49,6 @@ class ChatListAdapter(val onItemClicked: (ChatListModel) -> Unit, val context: C
                         binding.imgProgressBar.visibility = View.INVISIBLE
                     }
             }
-
-
-
-
-
-
-
-
-
         }
     }
 

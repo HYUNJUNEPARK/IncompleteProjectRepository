@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,21 +34,22 @@ class ChatListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (auth.currentUser == null) {
+        val mGlideRequestManager = Glide.with(this)
+
+        if (auth?.currentUser == null) {
             binding.noMemberCover.visibility = View.VISIBLE
             binding.noMemberCover.setOnTouchListener { _, _ ->
                 true
             }
-        }
-        else {
+        } else {
             binding.noMemberCover.visibility = View.INVISIBLE
-
-            initChatList()
+            initRecyclerView(mGlideRequestManager)
         }
     }
+
     override fun onResume() {
         super.onResume()
-        if (auth.currentUser != null) {
+        if (auth?.currentUser != null) {
             chatListAdapter.notifyDataSetChanged()
         }
     }
@@ -56,37 +59,40 @@ class ChatListFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun initChatList() {
+    private fun initRecyclerView(mGlideRequestManager: RequestManager) {
+        binding.progressBar.visibility = View.VISIBLE
+
         chatRoomList.clear()
-        chatListAdapter = ChatListAdapter(onItemClicked = {
-            //TODO 채팅방으로 이동하는 코드
-        },
-        requireContext())
+        chatListAdapter = ChatListAdapter(
+            onItemClicked = {
+                //TODO 채팅방으로 이동하는 코드
+            },
+            mGlideRequestManager
+        )
         binding.chatListRecyclerView.adapter = chatListAdapter
         binding.chatListRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val chatDB = firebaseDBReference
             .child(DB_USERS)
-            .child(auth.currentUser.uid)
+            .child(auth?.currentUser!!.uid)
             .child(CHILD_CHATROOM)
 
-        chatDB.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach { dataSnapshot ->
-                    val model = dataSnapshot.getValue(ChatListModel::class.java)
-                    model ?: return
-                    chatRoomList.add(model)
+        chatDB.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach { dataSnapshot ->
+                        val model = dataSnapshot.getValue(ChatListModel::class.java)
+                        model ?: return
+                        chatRoomList.add(model)
+                    }
+                    chatListAdapter.submitList(chatRoomList)
+                    chatListAdapter.notifyDataSetChanged()
+                    _binding?.progressBar?.visibility = View.INVISIBLE
                 }
-                chatListAdapter.submitList(chatRoomList)
-                chatListAdapter.notifyDataSetChanged()
 
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-
-            override fun onCancelled(e: DatabaseError) {
-                Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_SHORT).show()
-                binding.progressBar.visibility = View.INVISIBLE
-            }
-        })
+                override fun onCancelled(e: DatabaseError) {
+                    Toast.makeText(requireContext(), "Error : $e", Toast.LENGTH_SHORT).show()
+                    _binding?.progressBar?.visibility = View.INVISIBLE
+                }
+            })
     }
 }

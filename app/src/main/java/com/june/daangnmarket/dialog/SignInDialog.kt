@@ -32,8 +32,8 @@ class SignInDialog {
             }
 
             Thread {
-                auth.signInWithEmailAndPassword(email, pw)
-                    .addOnCompleteListener { task ->
+                auth?.signInWithEmailAndPassword(email, pw)
+                    ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             initEmail()
                             val intent = Intent(activity, MainActivity::class.java)

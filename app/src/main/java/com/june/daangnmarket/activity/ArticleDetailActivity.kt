@@ -43,7 +43,7 @@ class ArticleDetailActivity : AppCompatActivity() {
     private fun initChattingButton() {
         //TODO 중복변수
         val productSellerId = articleModel.sellerId
-        val productBuyerId: String? = auth.currentUser?.uid
+        val productBuyerId: String? = auth?.currentUser?.uid
 
         if (productSellerId == productBuyerId || productBuyerId == null) {
             binding.chattingButton.visibility = View.INVISIBLE
@@ -78,7 +78,7 @@ class ArticleDetailActivity : AppCompatActivity() {
     private fun initModifyButton() {
         //TODO 중복변수
         val articleWriterId = articleModel.sellerId
-        val userId: String? = auth.currentUser?.uid
+        val userId: String? = auth?.currentUser?.uid
 
         if (articleWriterId == userId) {
             binding.modifyButton.visibility = View.VISIBLE
@@ -114,6 +114,8 @@ class ArticleDetailActivity : AppCompatActivity() {
             imgRef.downloadUrl
                 .addOnSuccessListener { uri ->
 
+
+                    //TODO Solve context Issue
                     Glide.with(this@ArticleDetailActivity)
                         .load(uri)
                         .error(R.drawable.ic_baseline_cancel_24)
@@ -127,4 +129,6 @@ class ArticleDetailActivity : AppCompatActivity() {
                 }
         }
     }
+
+
 }

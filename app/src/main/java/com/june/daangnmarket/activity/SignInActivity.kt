@@ -24,7 +24,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun initSignInWithoutAuthButton() {
         binding.sigInWithoutAuthButton.setOnClickListener {
-            auth.signOut()
+            auth?.signOut()
             email = null
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

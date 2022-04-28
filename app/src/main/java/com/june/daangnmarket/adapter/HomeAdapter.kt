@@ -1,6 +1,5 @@
 package com.june.daangnmarket.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,23 +8,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.R
 import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
-import com.june.daangnmarket.model.ArticleModel
 import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
+import com.june.daangnmarket.model.ArticleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 
-class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (diffUtil) {
+class HomeAdapter(mGlideRequestManager: RequestManager) : ListAdapter<ArticleModel, HomeAdapter.ViewHolder> (diffUtil) {
+    val mGlideRequestManager = mGlideRequestManager
+
     inner class ViewHolder(private val binding: ItemAriticleBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(articleModel: ArticleModel) {
             val format = SimpleDateFormat("MM월 dd일")
@@ -50,7 +51,7 @@ class HomeAdapter(val fragmentContext: Context) : ListAdapter<ArticleModel, Home
             CoroutineScope(Dispatchers.IO).launch {
                 imgRef.downloadUrl
                     .addOnSuccessListener { uri ->
-                        Glide.with(fragmentContext)
+                        mGlideRequestManager
                             .load(uri)
                             .transform(CenterCrop(), RoundedCorners(18))
                             .error(R.drawable.ic_baseline_cancel_24)

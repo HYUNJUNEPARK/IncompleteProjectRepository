@@ -98,3 +98,7 @@ https://eso0609.tistory.com/72
 Fragment에서 Back Press 처리하기(with. OnBackPressedDispatcher)
 https://readystory.tistory.com/186
 
+Glide Library 사용시 참고 사항
+-You cannot start a load for a destroyed activity
+https://gogorchg.tistory.com/entry/Android-Glide-Library-%EC%82%AC%EC%9A%A9%EC%8B%9C-%EC%B0%B8%EA%B3%A0-%EC%82%AC%ED%95%AD
+
