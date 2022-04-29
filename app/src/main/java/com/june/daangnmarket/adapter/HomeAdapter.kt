@@ -15,6 +15,7 @@ import com.google.firebase.storage.StorageReference
 import com.june.daangnmarket.R
 import com.june.daangnmarket.activity.ArticleDetailActivity
 import com.june.daangnmarket.databinding.ItemAriticleBinding
+import com.june.daangnmarket.key.DBKey.Companion.ARTICLE_MODEL_INTENT
 import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.FirebaseVar.Companion.storage
 import com.june.daangnmarket.model.ArticleModel
@@ -38,7 +39,7 @@ class HomeAdapter(mGlideRequestManager: RequestManager) : ListAdapter<ArticleMod
             binding.root.setOnClickListener {
                 val context = binding.thumbnailImageView.context
                 val intent = Intent(context, ArticleDetailActivity::class.java)
-                intent.putExtra("model", articleModel)
+                intent.putExtra(ARTICLE_MODEL_INTENT, articleModel)
                 context.startActivity(intent)
             }
             loadImgFromStorageAndSetByGlide(articleModel)

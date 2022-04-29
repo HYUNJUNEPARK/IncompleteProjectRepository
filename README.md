@@ -104,3 +104,13 @@ https://gogorchg.tistory.com/entry/Android-Glide-Library-%EC%82%AC%EC%9A%A9%EC%8
 -Glide.with(Context) - context 전달 시 참고했던 링크
 https://stackoverflow.com/questions/31964737/glide-image-loading-with-application-context/32887693#32887693
 https://callmemaru.com/posts/glide-error-you-cannot-start-a-load-for-a-destroyed-activity/
+
+안드로이드 데이터 목록 정렬 속성
+https://firebase.google.com/docs/database/android/lists-of-data?hl=ko
+
+안드로이드 firebase 특정 값 접근에 대해 질문드립니다.
+->push 빼고 setValue
+https://okky.kr/article/512631
+
+
+

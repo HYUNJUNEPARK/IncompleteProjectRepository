@@ -66,7 +66,7 @@
         app:layout_constraintTop_toTopOf="@id/sellerProfileImageView" />
 
     <View
-        android:id="@+id/div"
+        android:id="@+id/bottomDiv"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="20dp"

@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbarUnderLineView" />
 
     <View
-        android:id="@+id/div"
+        android:id="@+id/bottomDiv"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
@@ -119,7 +119,7 @@
         android:backgroundTint="@color/orange"
         android:text="이미지 가져오기"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/div"
+        app:layout_constraintTop_toBottomOf="@id/bottomDiv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

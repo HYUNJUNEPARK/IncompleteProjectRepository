@@ -26,7 +26,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/div"
+        android:id="@+id/bottomDiv"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_cc"
@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/div">
+        app:layout_constraintTop_toBottomOf="@id/bottomDiv">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -167,5 +167,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/div" />
+        app:layout_constraintTop_toBottomOf="@id/bottomDiv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

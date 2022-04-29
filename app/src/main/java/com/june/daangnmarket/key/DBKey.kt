@@ -14,5 +14,9 @@ class DBKey {
         const val DESCRIPTION = "description"
         //Chat
         const val CHILD_CHATROOM = "DaangnChatRoom"
+        const val DB_CHATS = "ChatContents"
+        //Intent
+        const val ARTICLE_MODEL_INTENT = "model"
+        const val CHAT_KEY = "chatKey"
     }
 }

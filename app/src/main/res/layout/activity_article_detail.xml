@@ -120,6 +120,7 @@
         android:layout_margin="15dp"
         android:backgroundTint="@color/orange"
         android:src="@drawable/ic_baseline_message_24"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toTopOf="@id/div3"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />

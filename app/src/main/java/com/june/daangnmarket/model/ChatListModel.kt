@@ -5,7 +5,8 @@ data class ChatListModel(
     val sellerId: String,
     val itemTitle: String,
     val key: String,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val createAt: Long
 ) {
-    constructor(): this("", "", "", "", "")
+    constructor(): this("", "", "", "", "", 0)
 }

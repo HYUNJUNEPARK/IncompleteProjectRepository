@@ -23,6 +23,7 @@
         <entry key="app/src/main/res/drawable/select_menu_color.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/activity_article_add.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_article_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_chat_detail.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.17" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.22" />
@@ -33,9 +34,10 @@
         <entry key="app/src/main/res/layout/dialog_signin.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_signup.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/fragment_chat_list.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_ariticle.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_chat.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_chatlist.xml" value="0.21" />
         <entry key="app/src/main/res/layout/layout_signin.xml" value="0.10092592592592593" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />

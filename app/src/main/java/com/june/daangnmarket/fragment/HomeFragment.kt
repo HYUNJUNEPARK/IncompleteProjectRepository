@@ -2,6 +2,7 @@ package com.june.daangnmarket.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,11 @@ import com.june.daangnmarket.key.DBKey.Companion.DESCRIPTION
 import com.june.daangnmarket.key.DBKey.Companion.IMAGE_URL
 import com.june.daangnmarket.key.DBKey.Companion.PRICE
 import com.june.daangnmarket.key.DBKey.Companion.SELLER_ID
+import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.DBKey.Companion.TITLE
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
 import com.june.daangnmarket.model.ArticleModel
-import com.june.daangnmarket.model.ChatListItemModel
-import com.june.daangnmarket.model.ChatListModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

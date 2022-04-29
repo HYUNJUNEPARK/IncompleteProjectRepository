@@ -7,10 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.june.daangnmarket.R
 import com.june.daangnmarket.databinding.ActivityArticleDetailBinding
+import com.june.daangnmarket.key.DBKey.Companion.ARTICLE_MODEL_INTENT
 import com.june.daangnmarket.key.DBKey.Companion.CHILD_CHATROOM
 import com.june.daangnmarket.key.DBKey.Companion.DB_USERS
+import com.june.daangnmarket.key.DBKey.Companion.SELLER_ID
 import com.june.daangnmarket.key.DBKey.Companion.TAG
 import com.june.daangnmarket.key.FirebaseVar.Companion.auth
 import com.june.daangnmarket.key.FirebaseVar.Companion.firebaseDBReference
@@ -20,6 +25,7 @@ import com.june.daangnmarket.model.ChatListModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.sql.Date
 import java.text.SimpleDateFormat
 
@@ -31,10 +37,9 @@ class ArticleDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val model = intent.getSerializableExtra("model")
+        val model = intent.getSerializableExtra(ARTICLE_MODEL_INTENT)
         articleModel = model as ArticleModel
         val mGlideRequestManager: RequestManager = Glide.with(this)
-
         initViews()
         initDateTextView()
         initImageView(mGlideRequestManager)
@@ -50,30 +55,42 @@ class ArticleDetailActivity : AppCompatActivity() {
         if (productSellerId == productBuyerId || productBuyerId == null) {
             binding.chattingButton.visibility = View.INVISIBLE
         }
+        else {
+            binding.chattingButton.setOnClickListener {
+                val chatRoom = ChatListModel(
+                    buyerId = productBuyerId!!,
+                    sellerId = productSellerId!!,
+                    itemTitle = articleModel.title!!,
+                    key = "${productBuyerId}_${productSellerId}_${articleModel.imageUrl!!}",
+                    imageUrl = articleModel.imageUrl!!,
+                    createAt = System.currentTimeMillis()
+                )
 
-        binding.chattingButton.setOnClickListener {
-            val chatRoom = ChatListModel(
-                buyerId = productBuyerId!!,
-                sellerId = productSellerId!!,
-                itemTitle = articleModel.title!!,
-                key = "${productBuyerId}_${productSellerId}",
-                imageUrl = articleModel.imageUrl!!
-            )
+                //TODO DB 생성전에 이미 만들어진 DB가 있는지 확인할 필요가 있음
+                val userDB = firebaseDBReference.child(DB_USERS)
+                //[START ]
+                //키값 도달!! 성공 사례 -> setValue 과정에서 push() 를 뺐음
+                val key = userDB.child(productBuyerId).child("DaangnChatRoom").child("TODO ID").child("key")
+                Log.d(TAG, "articleDetailActivity: ${key.get()}")
+                key.get().addOnSuccessListener {
+                    Log.d(TAG, "data: ${it.value}")
+                }
+                //data: dkox9OMpmkZtLQzswAjFlIKeEfF2_5q6bMy7u2KcW3Fu4l4N0E9UCGQU2_5q6bMy7u2KcW3Fu4l4N0E9UCGQU21651048631218
+                //[END ]
 
-            //TODO DB 생성전에 이미 만들어진 DB가 있는지 확인할 필요가 있음
+                //구매자 DB
+                userDB.child(productBuyerId)
+                    .child(CHILD_CHATROOM)
+                    .push()
+                    .setValue(chatRoom)
+                //판매자 DB
+                userDB.child(productSellerId)
+                    .child(CHILD_CHATROOM)
+                    .push()
+                    .setValue(chatRoom)
 
-            val userDB = firebaseDBReference.child(DB_USERS)
-            //구매자 DB
-            userDB.child(productBuyerId)
-                .child(CHILD_CHATROOM)
-                .push()
-                .setValue(chatRoom)
-            //판매자 DB
-            userDB.child(productSellerId)
-                .child(CHILD_CHATROOM)
-                .push()
-                .setValue(chatRoom)
-            Toast.makeText(this, "채팅방 생성", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "채팅방 생성", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -117,7 +134,6 @@ class ArticleDetailActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             imgRef.downloadUrl
                 .addOnSuccessListener { uri ->
-                    //TODO Solve context Issue
                     mGlideRequestManager
                         .load(uri)
                         .error(R.drawable.ic_baseline_cancel_24)
