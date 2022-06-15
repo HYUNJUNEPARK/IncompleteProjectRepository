@@ -41,10 +41,6 @@ class Permission(private val context: Context) {
     }
 
     fun permissionDenied() {
-        denyDialog()
-    }
-
-    private fun denyDialog() {
         AlertDialog.Builder(context)
             .setTitle("권한 설정")
             .setMessage("권한 거절로 인해 일부기능이 제한됩니다.")

@@ -1,13 +1,12 @@
-package com.june.phonenumberbackup.resolver
+package com.june.phonenumberbackup.contact_access
 
 import android.content.Context
 import android.net.Uri
 import android.provider.ContactsContract
-import android.util.Log
 import com.june.phonenumberbackup.model.ContactInfoModel
 
-class ContactInfoResolver() {
-    fun contactInfo(context: Context): MutableList<ContactInfoModel> {
+class ReadContact {
+    fun readContactInfo(context: Context): MutableList<ContactInfoModel> {
         var contactInfoList = mutableListOf<ContactInfoModel>()
 
         val uri : Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
@@ -30,7 +29,5 @@ class ContactInfoResolver() {
         }
         cursor?.close()
         return contactInfoList
-
-
     }
 }
