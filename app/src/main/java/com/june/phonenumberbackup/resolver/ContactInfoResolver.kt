@@ -1,18 +1,19 @@
 package com.june.phonenumberbackup.resolver
 
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
+import android.util.Log
+import com.june.phonenumberbackup.model.ContactInfoModel
 
 class ContactInfoResolver() {
-    fun mCursor(context: Context): Cursor? {
+    fun contactInfo(context: Context): MutableList<ContactInfoModel> {
+        var contactInfoList = mutableListOf<ContactInfoModel>()
+
         val uri : Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
         val contactArray = arrayOf(
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.TYPE /*1)HOME, 2)MOBILE, 3)WORK*/,
-            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+            ContactsContract.CommonDataKinds.Phone.NUMBER
         )
         val cursor = context.contentResolver?.query(
             uri,
@@ -21,23 +22,15 @@ class ContactInfoResolver() {
             null,
             null
         )
-        return cursor
+        while (cursor?.moveToNext() == true) {
+            val name = cursor.getString(0)
+            val number = cursor.getString(1)
+            val contactInfo = ContactInfoModel(name, number)
+            contactInfoList.add(contactInfo)
+        }
+        cursor?.close()
+        return contactInfoList
+
+
     }
-
-
-
-
-
-
-//    while (cursor?.moveToNext() == true) {
-//        val name = cursor.getString(0)
-//        val number = cursor.getString(1)
-//        val sim = cursor.getString(2)
-//        val id = cursor.getString(3)
-//        val contact= Contact(name, number, sim, id)
-//        contactListAll.add(contact)
-//    }
-//    cursor?.close()
-//
-
 }

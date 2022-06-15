@@ -8,6 +8,7 @@ class PermissionConstant {
 
         val permissionsArray: Array<String> = arrayOf(
             Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS
         )
     }
 }

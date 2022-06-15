@@ -1,37 +1,41 @@
 package com.june.phonenumberbackup.activity
 
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Contacts.PhonesColumns.NUMBER
 import android.provider.ContactsContract
+import android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.june.phonenumberbackup.R
+import com.june.phonenumberbackup.databinding.ActivityDownLoadBinding
+import com.june.phonenumberbackup.model.ContactInfoModel
+import com.june.phonenumberbackup.resolver.AddContact
+import com.june.phonenumberbackup.resolver.ContactInfoResolver
 
 class DownloadActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDownLoadBinding
+    lateinit var contactInfoList: MutableList<ContactInfoModel>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_down_load)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_down_load)
+        contactInfoList = ContactInfoResolver().contactInfo(this)
+
+        binding.phoneNumberCountTextView.text = contactInfoList.size.toString()
+        Log.d("testLog", "onCreate: $contactInfoList")
     }
 
-    fun getContents(v: View) {
-        val uri : Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-        val contactArray = arrayOf(
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER,
-            ContactsContract.CommonDataKinds.Phone.TYPE /*1)HOME, 2)MOBILE, 3)WORK*/,
-            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-        )
-        val cursor = contentResolver?.query(uri, contactArray, null, null, null)
-        while (cursor?.moveToNext() == true) {
-            val name = cursor.getString(0)
-            val number = cursor.getString(1)
-            val sim = cursor.getString(2)
-            val id = cursor.getString(3)
-            Log.d("testLog", "getContents: name: $name/number: $number/ sim:  $sim/ id: $id")
-            //val contact= Contact(name, number, sim, id)
-            //contactListAll.add(contact)
-        }
-        cursor?.close()
+    fun saveInfoTest(v: View) {
+        AddContact().addContact(this)
+
     }
 }
+
+
+//Android - ContentProvider 구현 및 예제
+//https://codechacha.com/ko/android-contentprovider/
