@@ -8,7 +8,6 @@ import java.lang.Exception
 
 //Ref : https://gist.github.com/Antarix/d13f84c051f2f5b8d47b
 //Description : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=aiger&logNo=100143481405
-
 class SyncContact(private val context: Context) {
     private lateinit var ops: ArrayList<ContentProviderOperation>
     private lateinit var displayName: String
@@ -30,7 +29,7 @@ class SyncContact(private val context: Context) {
         insertDisplayName()
         insertPhoneNumber()
 
-        // Asking the Contact provider to create a new contact
+        //Asking the Contact provider to create a new contact
         try {
             context.contentResolver.applyBatch(ContactsContract.AUTHORITY, ops)
         } catch (e: Exception) {

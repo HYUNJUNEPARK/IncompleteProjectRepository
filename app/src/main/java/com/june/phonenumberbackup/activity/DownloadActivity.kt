@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.june.phonenumberbackup.R
 import com.june.phonenumberbackup.contact_access.ReadContact
-import com.june.phonenumberbackup.contact_access.SyncContact
 import com.june.phonenumberbackup.databinding.ActivityDownLoadBinding
+import com.june.phonenumberbackup.fileIO.ContactFileOutput
 import com.june.phonenumberbackup.model.ContactInfoModel
 
 class DownloadActivity : AppCompatActivity() {
@@ -22,7 +22,8 @@ class DownloadActivity : AppCompatActivity() {
         binding.phoneNumberCountTextView.text = contactInfoList.size.toString()
     }
 
-    fun saveInfoTest(v: View) {
-        SyncContact(this).syncContactInfo("테스트 이름", "010-4444-3132")
+    fun downloadContactFile(v: View) {
+        ContactFileOutput(this).writeFile()
+        //SyncContact(this).syncContactInfo("테스트 이름", "010-4444-3132")
     }
 }
