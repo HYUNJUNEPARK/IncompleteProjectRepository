@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.june.phonenumberbackup.R
 import com.june.phonenumberbackup.contact_access.ReadContact
 import com.june.phonenumberbackup.databinding.ActivityDownLoadBinding
-import com.june.phonenumberbackup.fileIO.ContactFileOutput
+import com.june.phonenumberbackup.fileIO.ContactFileIO
 import com.june.phonenumberbackup.model.ContactInfoModel
 
 class DownloadActivity : AppCompatActivity() {
@@ -22,8 +22,16 @@ class DownloadActivity : AppCompatActivity() {
         binding.phoneNumberCountTextView.text = contactInfoList.size.toString()
     }
 
-    fun downloadContactFile(v: View) {
-        ContactFileOutput(this).writeFile()
-        //SyncContact(this).syncContactInfo("테스트 이름", "010-4444-3132")
+    fun fileOutputButtonClicked(v: View) {
+        //파일 존재 여부 체크
+        for (contact in contactInfoList) {
+            val name = contact.name
+            val phoneNumber = contact.phoneNumber
+            ContactFileIO(this).writeFile(name, phoneNumber)
+        }
+    }
+
+    fun readFile(v: View) {
+        ContactFileIO(this).readFile()
     }
 }

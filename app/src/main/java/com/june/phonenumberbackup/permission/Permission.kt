@@ -37,7 +37,7 @@ class Permission(private val context: Context) {
     }
 
     fun permissionGranted() {
-        Toast.makeText(context, "모든 권한 승인", Toast.LENGTH_SHORT).show()
+
     }
 
     fun permissionDenied() {
