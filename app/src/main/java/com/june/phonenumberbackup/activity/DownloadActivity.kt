@@ -23,15 +23,11 @@ class DownloadActivity : AppCompatActivity() {
     }
 
     fun fileOutputButtonClicked(v: View) {
-        //파일 존재 여부 체크
+        //TODO 파일 존재 여부 체크
         for (contact in contactInfoList) {
             val name = contact.name
             val phoneNumber = contact.phoneNumber
             ContactFileIO(this).writeFile(name, phoneNumber)
         }
-    }
-
-    fun readFile(v: View) {
-        ContactFileIO(this).readFile()
     }
 }

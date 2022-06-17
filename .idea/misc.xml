@@ -7,9 +7,9 @@
         <entry key="../PhoneNumberBackup/app/src/main/res/layout/activity_down_load.xml" value="0.25" />
         <entry key="../PhoneNumberBackup/app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
         <entry key="../PhoneNumberBackup/app/src/main/res/layout/item_contact.xml" value="0.38229166666666664" />
-        <entry key="app/src/main/res/layout/activity_down_load.xml" value="0.36770833333333336" />
+        <entry key="app/src/main/res/layout/activity_down_load.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_sync.xml" value="0.38333333333333336" />
+        <entry key="app/src/main/res/layout/activity_sync.xml" value="0.25" />
       </map>
     </option>
   </component>
