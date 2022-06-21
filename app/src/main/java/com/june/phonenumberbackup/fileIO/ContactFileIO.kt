@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
-import com.june.phonenumberbackup.activity.Constant.Companion.contactFile
+import com.june.phonenumberbackup.activity.FileConstant.Companion.contactFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,13 +44,24 @@ class ContactFileIO(private val context: Context) {
             var contact = reader.readLine()
 
             while (contact != null) {
-                //TODO 폰에 전화번호 저장하려면 여기서 실행
-                contact = reader.readLine()
+                contact = reader.readLine() ?: return
+
+                saveContact(contact)
+
+                //TODO 이거 주석 풀면 동기화됨
+                //SyncContact(context).syncContactInfo(contactName, contactPhoneNumber)
             }
         }
         catch (e: Exception) {
             Toast.makeText(context, "파일 로드 실패 : $e", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun saveContact(contact: String) {
+        val contactInfo: List<String> = contact.split(",")
+        val contactName = contactInfo[0]
+        val contactPhoneNumber = contactInfo[1]
+        Log.d("testLog", "name: [$contactName] / number : [$contactPhoneNumber]")
     }
 }
 
