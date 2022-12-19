@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name"></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="contact">연락처</string>
+    <string name="message">메시지</string>
+    <string name="keypad">키패드</string>
+    <string name="recent">최근기록</string>
+    <string name="calendar">콜스케줄러</string>
+    <string name="test_message">SAMPLE TOAST MESSAGE</string>
+    <string name="drawer_opend">OPEND</string>
+    <string name="drawer_closed">CLOSED</string>
+    <string name="wrong_input_type_message">문자나 숫자를 정확히 입력해주세요.</string>
+</resources>
